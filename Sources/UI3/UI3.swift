@@ -21,5 +21,5 @@ public struct UI3Builder {
 
 struct UI3Defaults {
     static let debug = false
-    static let wireframe = true
+    static let wireframe = false
 }
