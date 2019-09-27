@@ -15,7 +15,7 @@ public class UI3View: UIView {
     
     // MARK - Life Cycle
     
-    init(objects: [UI3Object]) {
+    init(object: UI3Object) {
         
         view = SCNView()
         scene = SCNScene()
@@ -28,14 +28,14 @@ public class UI3View: UIView {
         view.allowsCameraControl = true
         addSubview(view)
         
-        // DEBUG
-//        view.debugOptions.insert(.showWireframe)
-//        view.showsStatistics = true
-        
-        for object in objects {
-            scene.rootNode.addChildNode(object.node)
+        if UI3Defaults.debug {
+            view.debugOptions.insert(.showWireframe)
+            view.showsStatistics = true
         }
-        scene.rootNode.addChildNode(BoundingBox().node)
+        
+        let frame = UI3Frame(position: .zero, size: UI3Scale(x: 1.0, y: 1.0, z: 1.0))
+        scene.rootNode.addChildNode(object.node(frame: frame))
+        scene.rootNode.addChildNode(BoundingBox().node(frame: frame))
         
         let camera = SCNCamera()
         camera.zNear = 0.001

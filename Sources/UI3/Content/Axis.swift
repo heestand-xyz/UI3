@@ -7,40 +7,75 @@
 
 import SceneKit
 
-public struct Axis: UI3Object {
-    
-    public let node: SCNNode
-    
-    public init(color: UIColor? = nil) {
+public struct Axis: UI3Content {
         
-        node = SCNNode()
-        
-        node.addChildNode(box(axis: .x, color: color ?? .red))
-        node.addChildNode(box(axis: .y, color: color ?? .green))
-        node.addChildNode(box(axis: .z, color: color ?? .blue))
-        
-    }
+    // MARK: Global Properies
+    var color: UIColor = .white
+    var shading: UI3Shading = .light
+    var isDoubleSided: Bool = false
     
-    func box(axis: UI3Axis, color: UIColor) -> SCNNode {
+    // MARK: - Life Cycle
+    
+    public init() {}
+    
+    // MARK: - Axie
+    
+    func axie(axis: UI3Axis, color: UIColor) -> SCNNode {
         
         let length: CGFloat = 0.1
         let width: CGFloat = 0.005
         let chamferRadius: CGFloat = 0.0025
         
-        let box = Box(width: axis == .x ? length : width,
-                      height: axis == .y ? length : width,
-                      length: axis == .z ? length : width,
-                      chamferRadius: chamferRadius,
-                      color: color,
-                      shading: .constant,
-                      isDoubleSided: true)
+//        let box = Box()
+//        let box = Box(width: axis == .x ? length : width,
+//                      height: axis == .y ? length : width,
+//                      length: axis == .z ? length : width,
+//                      chamferRadius: chamferRadius,
+//                      color: color,
+//                      shading: .constant,
+//                      isDoubleSided: true)
         
-        box.node.position = SCNVector3(axis == .x ? length / 2 : 0,
-                                       axis == .y ? length / 2 : 0,
-                                       axis == .z ? length / 2 : 0)
+//        box.node.position = SCNVector3(axis == .x ? length / 2 : 0,
+//                                       axis == .y ? length / 2 : 0,
+//                                       axis == .z ? length / 2 : 0)
+//
+//        return box.node
+       
+        return SCNNode()
         
-        return box.node
+    }
+    
+    // MARK: - Node
+    
+    public func node(frame: UI3Frame) -> SCNNode {
         
+        let node = SCNNode()
+        
+        node.addChildNode(axie(axis: .x, color: color ?? .red))
+        node.addChildNode(axie(axis: .y, color: color ?? .green))
+        node.addChildNode(axie(axis: .z, color: color ?? .blue))
+        
+        return node
+        
+    }
+    
+    // MARK: - Mutating Funcs
+    
+    // MARK: Global Mutating Funcs
+    
+    public mutating func color(_ value: UIColor) -> UI3Content {
+        color = value
+        return self
+    }
+    
+    public mutating func shading(_ value: UI3Shading) -> UI3Content {
+        shading = value
+        return self
+    }
+    
+    public mutating func isDoubleSided(_ value: Bool) -> UI3Content {
+        isDoubleSided = value
+        return self
     }
     
 }

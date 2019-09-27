@@ -7,13 +7,22 @@
 
 import SceneKit
 
-public struct BoundingBox: UI3Object {
+public struct BoundingBox: UI3Content {
     
-    public let node: SCNNode
+    // MARK: Global Properies
+    var color: UIColor = .white
+    var shading: UI3Shading = .light
+    var isDoubleSided: Bool = false
     
-    public init() {
+    // MARK: - Life Cycle
+    
+    public init() {}
+    
+    // MARK: - Node
+    
+    public func node(frame: UI3Frame) -> SCNNode {
         
-        node = SCNNode()
+        let node = SCNNode()
         
         let color: UIColor
         if #available(iOS 10.0, *) {
@@ -29,15 +38,36 @@ public struct BoundingBox: UI3Object {
                 for z in 0..<2 {
                     let zWay = CGFloat(z * 2) - 1.0
                     
-                    let axis = Axis(color: color)
-                    axis.node.position = SCNVector3(xWay / 2, yWay / 2, zWay / 2)
-                    axis.node.scale = SCNVector3(-xWay, -yWay, -zWay)
-                    node.addChildNode(axis.node)
+//                    let axis = Axis(color: color)
+//                    axis.node.position = SCNVector3(xWay / 2, yWay / 2, zWay / 2)
+//                    axis.node.scale = SCNVector3(-xWay, -yWay, -zWay)
+//                    node.addChildNode(axis.node)
                     
                 }
             }
         }
         
+        return node
+        
+    }
+    
+    // MARK: - Mutating Funcs
+    
+    // MARK: Global Mutating Funcs
+    
+    public mutating func color(_ value: UIColor) -> UI3Content {
+        color = value
+        return self
+    }
+    
+    public mutating func shading(_ value: UI3Shading) -> UI3Content {
+        shading = value
+        return self
+    }
+    
+    public mutating func isDoubleSided(_ value: Bool) -> UI3Content {
+        isDoubleSided = value
+        return self
     }
     
 }
