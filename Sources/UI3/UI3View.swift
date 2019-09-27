@@ -35,7 +35,7 @@ public class UI3View: UIView {
         
         let frame = UI3Frame(position: .zero, size: UI3Scale(x: 1.0, y: 1.0, z: 1.0))
         scene.rootNode.addChildNode(object.node(frame: frame))
-        scene.rootNode.addChildNode(BoundingBox().node(frame: frame))
+//        scene.rootNode.addChildNode(BoundingBox().node(frame: frame))
         
         let camera = SCNCamera()
         camera.zNear = 0.001

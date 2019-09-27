@@ -11,17 +11,19 @@ public protocol UI3Object {
     
     func node(frame: UI3Frame) -> SCNNode
     
-//    mutating func frame(_ frame: UI3Frame) -> UI3Object
-    
+    func frame(_ frame: UI3Frame) -> UI3Object
+//    func scale(to scale: CGFloat) -> UI3Object
+//    func scale(to scale: UI3Scale) -> UI3Object
+
 }
 
 public protocol UI3Content: UI3Object {
     
     init()
     
-    mutating func color(_ value: UIColor) -> UI3Content
-    mutating func shading(_ value: UI3Shading) -> UI3Content
-    mutating func isDoubleSided(_ value: Bool) -> UI3Content
+    func color(_ value: UIColor) -> UI3Content
+    func shading(_ value: UI3Shading) -> UI3Content
+    func isDoubleSided(_ value: Bool) -> UI3Content
     
 }
 

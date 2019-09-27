@@ -35,32 +35,45 @@ public struct Box: UI3Content {
             box.firstMaterial!.fillMode = UI3Defaults.wireframe ? .lines : .fill
         }
         
-        return SCNNode(geometry: box)
+        let node = SCNNode(geometry: box)
+        node.position = frame.position.scnVector3
         
+        return node
+        
+    }
+    
+    // MARK: - Frame
+    
+    public func frame(_ frame: UI3Frame) -> UI3Object {
+        return self
     }
     
     // MARK: - Mutating Funcs
     
-    public mutating func chamferRadius(_ value: CGFloat) -> Box {
-        chamferRadius = value
-        return self
+    public func chamferRadius(_ value: CGFloat) -> Box {
+        var box = self
+        box.chamferRadius = value
+        return box
     }
     
     // MARK: Global Mutating Funcs
     
-    public mutating func color(_ value: UIColor) -> UI3Content {
-        color = value
-        return self
+    public func color(_ value: UIColor) -> UI3Content {
+        var content = self
+        content.color = value
+        return content
     }
     
-    public mutating func shading(_ value: UI3Shading) -> UI3Content {
-        shading = value
-        return self
+    public func shading(_ value: UI3Shading) -> UI3Content {
+        var content = self
+        content.shading = value
+        return content
     }
     
-    public mutating func isDoubleSided(_ value: Bool) -> UI3Content {
-        isDoubleSided = value
-        return self
+    public func isDoubleSided(_ value: Bool) -> UI3Content {
+        var content = self
+        content.isDoubleSided = value
+        return content
     }
     
 }

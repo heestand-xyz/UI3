@@ -15,6 +15,9 @@ public struct HStack: UI3ModifierArray {
     public func node(frame: UI3Frame) -> SCNNode {
         Stack(axis: .x, { objects }).node(frame: frame)
     }
+    public func frame(_ frame: UI3Frame) -> UI3Object {
+        return self
+    }
 }
 
 public struct VStack: UI3ModifierArray {
@@ -24,6 +27,9 @@ public struct VStack: UI3ModifierArray {
     }
     public func node(frame: UI3Frame) -> SCNNode {
         Stack(axis: .y, { objects }).node(frame: frame)
+    }
+    public func frame(_ frame: UI3Frame) -> UI3Object {
+        return self
     }
 }
 
@@ -35,6 +41,9 @@ public struct ZStack: UI3ModifierArray {
     public func node(frame: UI3Frame) -> SCNNode {
         Stack(axis: .z, { objects }).node(frame: frame)
     }
+    public func frame(_ frame: UI3Frame) -> UI3Object {
+        return self
+    }
 }
 
 public struct WStack: UI3ModifierArray {
@@ -44,6 +53,9 @@ public struct WStack: UI3ModifierArray {
     }
     public func node(frame: UI3Frame) -> SCNNode {
         Stack(axis: nil, { objects }).node(frame: frame)
+    }
+    public func frame(_ frame: UI3Frame) -> UI3Object {
+        return self
     }
 }
 
@@ -67,12 +79,28 @@ struct Stack: UI3ModifierArray {
     
     func node(frame: UI3Frame) -> SCNNode {
         let node = SCNNode()
-        for object in objects {
-//            let frame = UI3Frame(origin: .zero, size: <#T##UI3Scale#>)
-//            let subNode = object.node(frame: frame))
-//            node.addChildNode(subNode)
+        for (i, object) in objects.enumerated() {
+            var subFrame: UI3Frame = .one
+            if let axis = self.axis {
+                let positionFraction = CGFloat(i) / CGFloat(objects.count)
+                let sizeFraction = 1.0 / CGFloat(objects.count)
+                subFrame = UI3Frame(origin: UI3Position(x: axis == .x ? positionFraction : 0.0,
+                                                     y: axis == .y ? positionFraction : 0.0,
+                                                     z: axis == .z ? positionFraction : 0.0),
+                                 size: UI3Scale(x: axis == .x ? sizeFraction : 1.0,
+                                                y: axis == .y ? sizeFraction : 1.0,
+                                                z: axis == .z ? sizeFraction : 1.0))
+            }
+            let subNode = object.node(frame: frame +* subFrame)
+            node.addChildNode(subNode)
         }
         return node
+    }
+    
+    // MARK: - Frame
+    
+    public func frame(_ frame: UI3Frame) -> UI3Object {
+        return self
     }
     
 }
