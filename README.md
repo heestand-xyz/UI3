@@ -2,7 +2,7 @@
 
 3D UI lib for SwiftUI
 
-[Stacks](https://github.com/hexagons/UI3/blob/master/ui3_stacks.png?raw=true)
+![Stacks](https://github.com/hexagons/UI3/blob/master/ui3_stacks.png?raw=true)
 
 ~~~~swift
 import SwiftUI
