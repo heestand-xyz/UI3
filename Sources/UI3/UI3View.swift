@@ -23,9 +23,14 @@ public class UI3View: UIView {
         super.init(frame: .zero)
         
         view.scene = scene
+        view.backgroundColor = .clear
         view.autoenablesDefaultLighting = true
         view.allowsCameraControl = true
         addSubview(view)
+        
+        // DEBUG
+//        view.debugOptions.insert(.showWireframe)
+//        view.showsStatistics = true
         
         for object in objects {
             scene.rootNode.addChildNode(object.node)
