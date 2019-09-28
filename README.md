@@ -2,7 +2,7 @@
 
 3D UI lib for SwiftUI
 
-
+<img src="https://github.com/hexagons/UI3/blob/master/Images/ui3_stacks_frame.png?raw=true" height="256"/>
 
 ~~~~swift
 import SwiftUI
@@ -17,12 +17,21 @@ struct ContentView: View {
                 HStack {
                     Box()
                         .chamferRadius(0.05)
+                    Box()
+                        .chamferRadius(0.05)
+                        .frame(width: 0.25)
                     VStack {
                         Box()
                             .chamferRadius(0.05)
+                        Box()
+                            .chamferRadius(0.05)
+                            .frame(height: 0.25)
                         ZStack {
                             Box()
                                 .chamferRadius(0.05)
+                            Box()
+                                .chamferRadius(0.05)
+                                .frame(length: 0.25)
                             Box()
                                 .chamferRadius(0.05)
                         }
