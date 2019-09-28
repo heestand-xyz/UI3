@@ -17,7 +17,7 @@ public enum UI3Axis {
 
 public typealias UI3Scale = UI3Vector
 public typealias UI3Position = UI3Vector
-public struct UI3Vector {
+public struct UI3Vector: Equatable {
     
     public let x: CGFloat
     public let y: CGFloat
@@ -81,7 +81,8 @@ public struct UI3Vector {
     }
     
 }
-public struct UI3Frame {
+
+public struct UI3Frame: Equatable {
     
     public let origin: UI3Position
     public let size: UI3Scale
