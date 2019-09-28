@@ -16,24 +16,24 @@ struct ContentView: View {
             UI3 {
                 HStack {
                     Box()
-                        .chamferRadius(0.05)
+                        .cornerRadius(0.05)
                     Box()
-                        .chamferRadius(0.05)
+                        .cornerRadius(0.05)
                         .frame(width: 0.25)
                     VStack {
                         Box()
-                            .chamferRadius(0.05)
+                            .cornerRadius(0.05)
                         Box()
-                            .chamferRadius(0.05)
+                            .cornerRadius(0.05)
                             .frame(height: 0.25)
                         ZStack {
                             Box()
-                                .chamferRadius(0.05)
+                                .cornerRadius(0.05)
                             Box()
-                                .chamferRadius(0.05)
+                                .cornerRadius(0.05)
                                 .frame(length: 0.25)
                             Box()
-                                .chamferRadius(0.05)
+                                .cornerRadius(0.05)
                         }
                     }
                 }

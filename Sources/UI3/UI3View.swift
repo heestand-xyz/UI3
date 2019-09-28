@@ -31,6 +31,12 @@ public class UI3View: UIView {
         if UI3Defaults.debug {
             view.debugOptions.insert(.showWireframe)
             view.showsStatistics = true
+            let box = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
+            if #available(iOS 11.0, *) {
+                box.firstMaterial!.fillMode = .lines
+            }
+            let boxNode = SCNNode(geometry: box)
+            scene.rootNode.addChildNode(boxNode)
         }
         
         let frame = UI3Frame(position: .zero, size: UI3Scale(x: 1.0, y: 1.0, z: 1.0))

@@ -12,6 +12,8 @@ public struct Axis: UI3Content {
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
+    public var paddingEdges: UI3Edges = .all
+    public var paddingLength: CGFloat? = nil
     
     var color: UIColor = .white
     var shading: UI3Shading = .light
@@ -27,13 +29,13 @@ public struct Axis: UI3Content {
         
         let length: CGFloat = 0.1
         let width: CGFloat = 0.005
-        let chamferRadius: CGFloat = 0.0025
+        let cornerRadius: CGFloat = 0.0025
         
 //        let box = Box()
 //        let box = Box(width: axis == .x ? length : width,
 //                      height: axis == .y ? length : width,
 //                      length: axis == .z ? length : width,
-//                      chamferRadius: chamferRadius,
+//                      cornerRadius: cornerRadius,
 //                      color: color,
 //                      shading: .constant,
 //                      isDoubleSided: true)
@@ -62,13 +64,20 @@ public struct Axis: UI3Content {
         
     }
     
-    // MARK: - Frame
+    // MARK: - Object
     
     public func frame(width: CGFloat? = nil, height: CGFloat? = nil, length: CGFloat? = nil) -> UI3Object {
         var object = self
         if width != nil { object.width = width }
         if height != nil { object.height = height }
         if length != nil { object.length = length }
+        return object
+    }
+    
+    public func padding(edges: UI3Edges = .all, length: CGFloat = UI3Defaults.paddingLength) -> UI3Object {
+        var object = self
+        object.paddingEdges = edges
+        object.paddingLength = length
         return object
     }
         

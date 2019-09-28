@@ -12,12 +12,14 @@ public struct Box: UI3Content {
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
+    public var paddingEdges: UI3Edges = .all
+    public var paddingLength: CGFloat? = nil
     
     var color: UIColor = .white
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
     
-    var chamferRadius: CGFloat = 0.0
+    var cornerRadius: CGFloat = 0.0
     
     // MARK: - Life Cycle
     
@@ -30,7 +32,7 @@ public struct Box: UI3Content {
         let box = SCNBox(width: frame.size.x,
                          height: frame.size.y,
                          length: frame.size.z,
-                         chamferRadius: chamferRadius)
+                         chamferRadius: cornerRadius)
         box.firstMaterial!.lightingModel = shading.lightingModel
         box.firstMaterial!.diffuse.contents = color
         box.firstMaterial!.isDoubleSided = isDoubleSided || UI3Defaults.wireframe
@@ -45,7 +47,7 @@ public struct Box: UI3Content {
         
     }
     
-    // MARK: - Frame
+    // MARK: - Object
     
     public func frame(width: CGFloat? = nil, height: CGFloat? = nil, length: CGFloat? = nil) -> UI3Object {
         var object = self
@@ -55,11 +57,18 @@ public struct Box: UI3Content {
         return object
     }
     
+    public func padding(edges: UI3Edges = .all, length: CGFloat = UI3Defaults.paddingLength) -> UI3Object {
+        var object = self
+        object.paddingEdges = edges
+        object.paddingLength = length
+        return object
+    }
+    
     // MARK: - Box
     
-    public func chamferRadius(_ value: CGFloat) -> Box {
+    public func cornerRadius(_ value: CGFloat) -> Box {
         var box = self
-        box.chamferRadius = value
+        box.cornerRadius = value
         return box
     }
     

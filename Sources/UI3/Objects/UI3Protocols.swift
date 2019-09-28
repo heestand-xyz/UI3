@@ -12,12 +12,13 @@ public protocol UI3Object {
     var width: CGFloat? { get set }
     var height: CGFloat? { get set }
     var length: CGFloat? { get set }
-    
+    var paddingEdges: UI3Edges { get set }
+    var paddingLength: CGFloat? { get set }
+
     func node(frame: UI3Frame) -> SCNNode
     
     func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object
-//    func scale(to scale: CGFloat) -> UI3Object
-//    func scale(to scale: UI3Scale) -> UI3Object
+    func padding(edges: UI3Edges, length: CGFloat) -> UI3Object
 
 }
 

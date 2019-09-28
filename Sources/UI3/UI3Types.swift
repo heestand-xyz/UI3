@@ -15,6 +15,58 @@ public enum UI3Axis {
     case z
 }
 
+public enum UI3Edges {
+    
+    case all
+    
+    case left
+    case right
+    case top
+    case bottom
+    case far
+    case near
+    
+    case horizontal
+    case vertical
+    case depth
+    
+    var left: Bool {
+        [.all, .left, .horizontal].contains(self)
+    }
+    var right: Bool {
+        [.all, .right, .horizontal].contains(self)
+    }
+    var top: Bool {
+        [.all, .top, .vertical].contains(self)
+    }
+    var bottom: Bool {
+        [.all, .bottom, .vertical].contains(self)
+    }
+    var far: Bool {
+        [.all, .far, .depth].contains(self)
+    }
+    var near: Bool {
+        [.all, .near, .depth].contains(self)
+    }
+    
+    var positive: Bool {
+        [.all, .horizontal, .vertical, .depth, .right, .top, .near].contains(self)
+    }
+    
+    var negative: Bool {
+        [.all, .horizontal, .vertical, .depth, .left, .bottom, .far].contains(self)
+    }
+    
+    func on(axis: UI3Axis) -> Bool {
+        switch axis {
+        case .x: return left || right
+        case .y: return top || bottom
+        case .z: return far || near
+        }
+    }
+    
+}
+
 public typealias UI3Scale = UI3Vector
 public typealias UI3Position = UI3Vector
 public struct UI3Vector: Equatable {

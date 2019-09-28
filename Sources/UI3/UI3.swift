@@ -19,7 +19,8 @@ public struct UI3Builder {
     }
 }
 
-struct UI3Defaults {
+public struct UI3Defaults {
     static let debug = false
     static let wireframe = false
+    public static let paddingLength: CGFloat = 0.025
 }

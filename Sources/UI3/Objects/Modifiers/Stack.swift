@@ -12,6 +12,8 @@ public struct HStack: UI3ModifierArray {
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
+    public var paddingEdges: UI3Edges = .all
+    public var paddingLength: CGFloat? = nil
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -25,6 +27,12 @@ public struct HStack: UI3ModifierArray {
         if length != nil { object.length = length }
         return object
     }
+    public func padding(edges: UI3Edges = .all, length: CGFloat = UI3Defaults.paddingLength) -> UI3Object {
+        var object = self
+        object.paddingEdges = edges
+        object.paddingLength = length
+        return object
+    }
 }
 
 public struct VStack: UI3ModifierArray {
@@ -32,6 +40,8 @@ public struct VStack: UI3ModifierArray {
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
+    public var paddingEdges: UI3Edges = .all
+    public var paddingLength: CGFloat? = nil
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -45,6 +55,12 @@ public struct VStack: UI3ModifierArray {
         if length != nil { object.length = length }
         return object
     }
+    public func padding(edges: UI3Edges = .all, length: CGFloat = UI3Defaults.paddingLength) -> UI3Object {
+        var object = self
+        object.paddingEdges = edges
+        object.paddingLength = length
+        return object
+    }
 }
 
 public struct ZStack: UI3ModifierArray {
@@ -52,6 +68,8 @@ public struct ZStack: UI3ModifierArray {
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
+    public var paddingEdges: UI3Edges = .all
+    public var paddingLength: CGFloat? = nil
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -65,6 +83,12 @@ public struct ZStack: UI3ModifierArray {
         if length != nil { object.length = length }
         return object
     }
+    public func padding(edges: UI3Edges = .all, length: CGFloat = UI3Defaults.paddingLength) -> UI3Object {
+        var object = self
+        object.paddingEdges = edges
+        object.paddingLength = length
+        return object
+    }
 }
 
 public struct WStack: UI3ModifierArray {
@@ -72,6 +96,8 @@ public struct WStack: UI3ModifierArray {
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
+    public var paddingEdges: UI3Edges = .all
+    public var paddingLength: CGFloat? = nil
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -85,6 +111,12 @@ public struct WStack: UI3ModifierArray {
         if length != nil { object.length = length }
         return object
     }
+    public func padding(edges: UI3Edges = .all, length: CGFloat = UI3Defaults.paddingLength) -> UI3Object {
+        var object = self
+        object.paddingEdges = edges
+        object.paddingLength = length
+        return object
+    }
 }
 
 struct Stack: UI3ModifierArray {
@@ -95,6 +127,8 @@ struct Stack: UI3ModifierArray {
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
+    public var paddingEdges: UI3Edges = .all
+    public var paddingLength: CGFloat? = nil
     
     // MARK: - Life Cycle
     
@@ -110,55 +144,106 @@ struct Stack: UI3ModifierArray {
     // MARK: - Node
     
     func node(frame: UI3Frame) -> SCNNode {
+        
         let node = SCNNode()
+        
         var segments: [CGFloat?] = []
         if let axis = self.axis {
             for object in objects {
-                switch axis {
-                case .x: segments.append(object.width)
-                case .y: segments.append(object.height)
-                case .z: segments.append(object.length)
-                }
-            }
-        }
-        let totalSegments: CGFloat = segments.compactMap({$0}).reduce(0, { $0 + $1 })
-        let leftoverTotalFraction: CGFloat = max(1.0 - totalSegments, 0.0)
-        let leftoverCount: Int = segments.filter({ $0 == nil }).count
-        let lefoverFraction: CGFloat? = leftoverCount > 0 ? leftoverTotalFraction / CGFloat(leftoverCount) : nil
-        var position: CGFloat = 0.0
-        for object in objects {
-            var subFrame: UI3Frame = .one
-            if let axis = self.axis {
-                let size: CGFloat = {
+                let rawSize: CGFloat? = {
                     switch axis {
                     case .x: return object.width
                     case .y: return object.height
                     case .z: return object.length
                     }
-                }() ?? lefoverFraction!
-//                let positionFraction = CGFloat(i) / CGFloat(objects.count)
-//                let sizeFraction = 1.0 / CGFloat(objects.count)
-                subFrame = UI3Frame(origin: UI3Position(x: axis == .x ? position : 0.0,
-                                                     y: axis == .y ? position : 0.0,
-                                                     z: axis == .z ? position : 0.0),
-                                 size: UI3Scale(x: axis == .x ? size : 1.0,
-                                                y: axis == .y ? size : 1.0,
-                                                z: axis == .z ? size : 1.0))
-                position += size
+                }()
+                var size = rawSize
+                if size != nil {
+                    let paddingOnAxis = object.paddingEdges.on(axis: axis)
+                    let padding = paddingOnAxis ? (object.paddingLength ?? 0.0) : 0.0
+                    let negativePadding = object.paddingEdges.negative ? padding : 0.0
+                    let positivePadding = object.paddingEdges.positive ? padding : 0.0
+                    size! += negativePadding + positivePadding
+                }
+                segments.append(size)
             }
+        }
+        let totalSegments: CGFloat = segments.compactMap({$0}).reduce(0, { $0 + $1 })
+        
+        let leftoverTotalFraction: CGFloat = max(1.0 - totalSegments, 0.0)
+        let leftoverCount: Int = segments.filter({ $0 == nil }).count
+        let lefoverFraction: CGFloat? = leftoverCount > 0 ? leftoverTotalFraction / CGFloat(leftoverCount) : nil
+        
+        var position: CGFloat = 0.0
+        for object in objects {
+            
+            var subFrame: UI3Frame = .one
+            
+            if let axis = self.axis {
+                
+                let rawSize: CGFloat? = {
+                    switch axis {
+                    case .x: return object.width
+                    case .y: return object.height
+                    case .z: return object.length
+                    }
+                }()
+                var size: CGFloat = rawSize ?? lefoverFraction!
+                
+                let padding = object.paddingLength ?? 0.0
+                let paddingOnAxis = object.paddingEdges.on(axis: axis)
+                let paddingForAxis = paddingOnAxis ? padding : 0.0
+                let negativePadding = object.paddingEdges.negative ? paddingForAxis : 0.0
+                let positivePadding = object.paddingEdges.positive ? paddingForAxis : 0.0
+                let innerPadding = rawSize == nil ? negativePadding + positivePadding : 0.0
+                
+                let xLeftPadding = axis != .x ? object.paddingEdges.left ? padding : 0.0 : 0.0
+                let xRightPadding = axis != .x ? object.paddingEdges.right ? padding : 0.0 : 0.0
+                let xPadding = xLeftPadding + xRightPadding
+                let yBottomPadding = axis != .y ? object.paddingEdges.bottom ? padding : 0.0 : 0.0
+                let yTopPadding = axis != .y ? object.paddingEdges.top ? padding : 0.0 : 0.0
+                let yPadding = yBottomPadding + yTopPadding
+                let zFarPadding = axis != .z ? object.paddingEdges.far ? padding : 0.0 : 0.0
+                let zNearPadding = axis != .z ? object.paddingEdges.near ? padding : 0.0 : 0.0
+                let zPadding = zFarPadding + zNearPadding
+                
+                position += negativePadding
+                size -= innerPadding
+                
+                subFrame = UI3Frame(origin: UI3Position(x: axis == .x ? position : xLeftPadding,
+                                                        y: axis == .y ? position : yBottomPadding,
+                                                        z: axis == .z ? position : zFarPadding),
+                                    size: UI3Scale(x: axis == .x ? size : 1.0 - xPadding,
+                                                   y: axis == .y ? size : 1.0 - yPadding,
+                                                   z: axis == .z ? size : 1.0 - zPadding))
+                
+                position += size + positivePadding
+                
+            }
+            
             let subNode = object.node(frame: frame +* subFrame)
             node.addChildNode(subNode)
+            
         }
+        
         return node
+        
     }
     
-    // MARK: - Frame
+    // MARK: - Object
     
     public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
         var object = self
         if width != nil { object.width = width }
         if height != nil { object.height = height }
         if length != nil { object.length = length }
+        return object
+    }
+    
+    public func padding(edges: UI3Edges = .all, length: CGFloat = UI3Defaults.paddingLength) -> UI3Object {
+        var object = self
+        object.paddingEdges = edges
+        object.paddingLength = length
         return object
     }
     
