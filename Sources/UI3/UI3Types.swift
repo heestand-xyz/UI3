@@ -17,6 +17,7 @@ public enum UI3Axis {
 
 public enum UI3Edges {
     
+    case none
     case all
     
     case left
@@ -157,12 +158,7 @@ public struct UI3Frame: Equatable {
     }
     
     public static func +* (lhs: UI3Frame, rhs: UI3Frame) -> UI3Frame {
-        UI3Frame(origin: UI3Position(x: lhs.origin.x + rhs.origin.x,
-                                     y: lhs.origin.y + rhs.origin.y,
-                                     z: lhs.origin.z + rhs.origin.z),
-                 size: UI3Scale(x: lhs.size.x * rhs.size.x,
-                                y: lhs.size.y * rhs.size.y,
-                                z: lhs.size.z * rhs.size.z))
+        UI3Frame(origin: lhs.origin + rhs.origin, size: lhs.size * rhs.size)
     }
     
 }

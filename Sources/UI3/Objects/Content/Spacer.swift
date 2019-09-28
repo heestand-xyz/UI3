@@ -12,7 +12,7 @@ public struct Spacer: UI3Content {
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
-    public var paddingEdges: UI3Edges = .all
+    public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat? = nil
     
     // MARK: - Life Cycle
@@ -33,7 +33,7 @@ public struct Spacer: UI3Content {
         return self
     }
     
-    public func padding(edges: UI3Edges = .all, length: CGFloat = UI3Defaults.paddingLength) -> UI3Object {
+    public func padding(edges: UI3Edges, length: CGFloat) -> UI3Object {
         return self
     }
     

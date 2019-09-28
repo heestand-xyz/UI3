@@ -1,6 +1,6 @@
 # UI3
 
-3D UI lib for SwiftUI
+3D UI layout lib for SwiftUI
 
 <img src="https://github.com/hexagons/UI3/blob/master/Images/ui3_stacks_frame.png?raw=true" height="256"/>
 

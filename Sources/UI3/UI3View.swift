@@ -46,6 +46,7 @@ public class UI3View: UIView {
         let camera = SCNCamera()
         camera.zNear = 0.001
         camera.zFar = 10.0
+        camera.usesOrthographicProjection = UI3Defaults.orthoCamera
         let cameraNode = SCNNode()
         cameraNode.camera = camera
         cameraNode.position = SCNVector3(0.0, 0.0, 2.5)
