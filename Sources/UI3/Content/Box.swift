@@ -9,12 +9,15 @@ import SceneKit
 
 public struct Box: UI3Content {
     
-    var chamferRadius: CGFloat = 0.0
+    public var width: CGFloat? = nil
+    public var height: CGFloat? = nil
+    public var length: CGFloat? = nil
     
-    // MARK: Global Properies
     var color: UIColor = .white
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
+    
+    var chamferRadius: CGFloat = 0.0
     
     // MARK: - Life Cycle
     
@@ -44,11 +47,15 @@ public struct Box: UI3Content {
     
     // MARK: - Frame
     
-    public func frame(_ frame: UI3Frame) -> UI3Object {
-        return self
+    public func frame(width: CGFloat? = nil, height: CGFloat? = nil, length: CGFloat? = nil) -> UI3Object {
+        var object = self
+        if width != nil { object.width = width }
+        if height != nil { object.height = height }
+        if length != nil { object.length = length }
+        return object
     }
     
-    // MARK: - Mutating Funcs
+    // MARK: - Box
     
     public func chamferRadius(_ value: CGFloat) -> Box {
         var box = self
@@ -56,7 +63,7 @@ public struct Box: UI3Content {
         return box
     }
     
-    // MARK: Global Mutating Funcs
+    // MARK: - Content
     
     public func color(_ value: UIColor) -> UI3Content {
         var content = self

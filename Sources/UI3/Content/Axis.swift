@@ -9,7 +9,10 @@ import SceneKit
 
 public struct Axis: UI3Content {
         
-    // MARK: Global Properies
+    public var width: CGFloat? = nil
+    public var height: CGFloat? = nil
+    public var length: CGFloat? = nil
+    
     var color: UIColor = .white
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
@@ -61,13 +64,15 @@ public struct Axis: UI3Content {
     
     // MARK: - Frame
     
-    public func frame(_ frame: UI3Frame) -> UI3Object {
-        return self
+    public func frame(width: CGFloat? = nil, height: CGFloat? = nil, length: CGFloat? = nil) -> UI3Object {
+        var object = self
+        if width != nil { object.width = width }
+        if height != nil { object.height = height }
+        if length != nil { object.length = length }
+        return object
     }
-    
-    // MARK: - Mutating Funcs
-    
-    // MARK: Global Mutating Funcs
+        
+    // MARK: - Content
     
     public func color(_ value: UIColor) -> UI3Content {
         var content = self
