@@ -13,7 +13,7 @@ public protocol UI3Object {
     var height: CGFloat? { get set }
     var length: CGFloat? { get set }
     var paddingEdges: UI3Edges { get set }
-    var paddingLength: CGFloat? { get set }
+    var paddingLength: CGFloat { get set }
 
     func node(frame: UI3Frame) -> SCNNode
     

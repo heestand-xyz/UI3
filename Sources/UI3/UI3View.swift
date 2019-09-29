@@ -39,7 +39,8 @@ public class UI3View: UIView {
             scene.rootNode.addChildNode(boxNode)
         }
         
-        let frame = UI3Frame(position: .zero, size: UI3Scale(x: 1.0, y: 1.0, z: 1.0))
+        var frame = UI3Frame(position: .zero, size: UI3Scale(x: 1.0, y: 1.0, z: 1.0))
+        frame = frame.withPadding(edges: object.paddingEdges, length: object.paddingLength)
         scene.rootNode.addChildNode(object.node(frame: frame))
 //        scene.rootNode.addChildNode(BoundingBox().node(frame: frame))
         

@@ -13,7 +13,7 @@ public struct Spacer: UI3Content {
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
-    public var paddingLength: CGFloat? = nil
+    public var paddingLength: CGFloat = 0.0
     
     // MARK: - Life Cycle
     

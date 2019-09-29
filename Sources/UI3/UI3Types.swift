@@ -135,6 +135,7 @@ public struct UI3Vector: Equatable {
     
 }
 
+public typealias UI3Bounds = UI3Frame
 public struct UI3Frame: Equatable {
     
     public let origin: UI3Position
@@ -159,6 +160,15 @@ public struct UI3Frame: Equatable {
     
     public static func +* (lhs: UI3Frame, rhs: UI3Frame) -> UI3Frame {
         UI3Frame(origin: lhs.origin + rhs.origin, size: lhs.size * rhs.size)
+    }
+    
+    public func withPadding(edges: UI3Edges, length: CGFloat) -> UI3Frame {
+        return UI3Frame(origin: UI3Position(x: origin.x + (edges.left ? length : 0.0),
+                                            y: origin.y + (edges.bottom ? length : 0.0),
+                                            z: origin.z + (edges.far ? length : 0.0)),
+                        size: UI3Scale(x: size.x - (edges.left ? length : 0.0) - (edges.right ? length : 0.0),
+                                       y: size.y - (edges.bottom ? length : 0.0) - (edges.top ? length : 0.0),
+                                       z: size.z - (edges.far ? length : 0.0) - (edges.near ? length : 0.0)))
     }
     
 }

@@ -13,7 +13,7 @@ public struct HStack: UI3ModifierArray {
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
-    public var paddingLength: CGFloat? = nil
+    public var paddingLength: CGFloat = 0.0
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -41,7 +41,7 @@ public struct VStack: UI3ModifierArray {
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
-    public var paddingLength: CGFloat? = nil
+    public var paddingLength: CGFloat = 0.0
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -69,7 +69,7 @@ public struct ZStack: UI3ModifierArray {
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
-    public var paddingLength: CGFloat? = nil
+    public var paddingLength: CGFloat = 0.0
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -97,7 +97,7 @@ public struct WStack: UI3ModifierArray {
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
-    public var paddingLength: CGFloat? = nil
+    public var paddingLength: CGFloat = 0.0
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -128,7 +128,7 @@ struct Stack: UI3ModifierArray {
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
-    public var paddingLength: CGFloat? = nil
+    public var paddingLength: CGFloat = 0.0
     
     // MARK: - Life Cycle
     
@@ -150,22 +150,13 @@ struct Stack: UI3ModifierArray {
         var segments: [CGFloat?] = []
         if let axis = self.axis {
             for object in objects {
-                let rawSize: CGFloat? = {
+                let size: CGFloat? = {
                     switch axis {
                     case .x: return object.width
                     case .y: return object.height
                     case .z: return object.length
                     }
                 }()
-                var size = rawSize
-                if size != nil {
-                    let paddingOnAxis = object.paddingEdges.on(axis: axis)
-                    let paddingForAxis = paddingOnAxis ? (object.paddingLength ?? 0.0) : 0.0
-                    let negativePadding = object.paddingEdges.negative ? paddingForAxis : 0.0
-                    let positivePadding = object.paddingEdges.positive ? paddingForAxis : 0.0
-                    let padding = negativePadding + positivePadding
-                    size! += padding
-                }
                 segments.append(size)
             }
         }
@@ -183,43 +174,23 @@ struct Stack: UI3ModifierArray {
             
             if let axis = self.axis {
                 
-                let rawSize: CGFloat? = {
+                let size: CGFloat = {
                     switch axis {
                     case .x: return object.width
                     case .y: return object.height
                     case .z: return object.length
                     }
-                }()
-                var size: CGFloat = rawSize ?? lefoverFraction!
+                }() ?? lefoverFraction!
                 
-                let padding = object.paddingLength ?? 0.0
-                let paddingOnAxis = object.paddingEdges.on(axis: axis)
-                let paddingForAxis = paddingOnAxis ? padding : 0.0
-                let negativePadding = object.paddingEdges.negative ? paddingForAxis : 0.0
-                let positivePadding = object.paddingEdges.positive ? paddingForAxis : 0.0
-                let innerPadding = rawSize == nil ? negativePadding + positivePadding : 0.0
+                subFrame = UI3Frame(origin: UI3Position(x: axis == .x ? position : 0.0,
+                                                        y: axis == .y ? position : 0.0,
+                                                        z: axis == .z ? position : 0.0),
+                                    size: UI3Scale(x: axis == .x ? size : 1.0,
+                                                   y: axis == .y ? size : 1.0,
+                                                   z: axis == .z ? size : 1.0))
+                subFrame = subFrame.withPadding(edges: object.paddingEdges, length: object.paddingLength)
                 
-                let xLeftPadding = axis != .x ? (object.paddingEdges.left ? padding : 0.0) : 0.0
-                let xRightPadding = axis != .x ? (object.paddingEdges.right ? padding : 0.0) : 0.0
-                let xPadding = xLeftPadding + xRightPadding
-                let yBottomPadding = axis != .y ? (object.paddingEdges.bottom ? padding : 0.0) : 0.0
-                let yTopPadding = axis != .y ? (object.paddingEdges.top ? padding : 0.0) : 0.0
-                let yPadding = yBottomPadding + yTopPadding
-                let zFarPadding = axis != .z ? (object.paddingEdges.far ? padding : 0.0) : 0.0
-                let zNearPadding = axis != .z ? (object.paddingEdges.near ? padding : 0.0) : 0.0
-                let zPadding = zFarPadding + zNearPadding
-                
-                position += negativePadding
-                size -= innerPadding
-                
-                subFrame = UI3Frame(origin: UI3Position(x: axis == .x ? position : xLeftPadding,
-                                                        y: axis == .y ? position : yBottomPadding,
-                                                        z: axis == .z ? position : zFarPadding),
-                                    size: UI3Scale(x: axis == .x ? size : 1.0 - xPadding,
-                                                   y: axis == .y ? size : 1.0 - yPadding,
-                                                   z: axis == .z ? size : 1.0 - zPadding))
-                
-                position += size + positivePadding
+                position += size
                 
             }
             
