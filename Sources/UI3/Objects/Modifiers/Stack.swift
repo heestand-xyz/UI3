@@ -164,7 +164,7 @@ struct Stack: UI3ModifierArray {
         
         let leftoverTotalFraction: CGFloat = max(1.0 - totalSegments, 0.0)
         let leftoverCount: Int = segments.filter({ $0 == nil }).count
-        let lefoverFraction: CGFloat? = leftoverCount > 0 ? leftoverTotalFraction / CGFloat(leftoverCount) : nil
+        let lefoverFraction: CGFloat = leftoverCount > 0 ? leftoverTotalFraction / CGFloat(leftoverCount) : 0.0
         
         var position: CGFloat = 0.0
         print("-------")
@@ -180,7 +180,7 @@ struct Stack: UI3ModifierArray {
                     case .y: return object.height
                     case .z: return object.length
                     }
-                }() ?? lefoverFraction!
+                }() ?? lefoverFraction
                 
                 subFrame = UI3Frame(origin: UI3Position(x: axis == .x ? position : 0.0,
                                                         y: axis == .y ? position : 0.0,
@@ -188,13 +188,19 @@ struct Stack: UI3ModifierArray {
                                     size: UI3Scale(x: axis == .x ? size : 1.0,
                                                    y: axis == .y ? size : 1.0,
                                                    z: axis == .z ? size : 1.0))
+//                print(subFrame)
                 subFrame = subFrame.withPadding(edges: object.paddingEdges, length: object.paddingLength)
+//                print(subFrame)
                 
                 position += size
                 
             }
-            
-            let subNode = object.node(frame: frame +* subFrame)
+            print("---")
+            let comboFrame = frame +* subFrame
+            print(frame)
+            print(subFrame)
+            print(comboFrame)
+            let subNode = object.node(frame: comboFrame)
             node.addChildNode(subNode)
             
             if UI3Defaults.debug {

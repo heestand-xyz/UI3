@@ -41,7 +41,7 @@ public struct Box: UI3Content {
         }
         
         let node = SCNNode(geometry: box)
-        node.position = frame.position.scnVector3
+        node.position =  frame.position.scnVector3
         
         return node
         

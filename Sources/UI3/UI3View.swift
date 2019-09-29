@@ -27,21 +27,23 @@ public class UI3View: UIView {
         view.autoenablesDefaultLighting = true
         view.allowsCameraControl = true
         addSubview(view)
-        
+
+        let frame = UI3Frame(origin: .zero, size: UI3Scale(x: 1.0, y: 1.0, z: 1.0))
+
         if UI3Defaults.debug {
             view.debugOptions.insert(.showWireframe)
             view.showsStatistics = true
-            let box = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
+            let box = SCNBox(width: frame.size.x, height: frame.size.y, length: frame.size.z, chamferRadius: 0.0)
             if #available(iOS 11.0, *) {
                 box.firstMaterial!.fillMode = .lines
             }
             let boxNode = SCNNode(geometry: box)
+            boxNode.position = frame.position.scnVector3
             scene.rootNode.addChildNode(boxNode)
         }
         
-        var frame = UI3Frame(position: .zero, size: UI3Scale(x: 1.0, y: 1.0, z: 1.0))
-        frame = frame.withPadding(edges: object.paddingEdges, length: object.paddingLength)
-        scene.rootNode.addChildNode(object.node(frame: frame))
+        let subFrame = frame.withPadding(edges: object.paddingEdges, length: object.paddingLength)
+        scene.rootNode.addChildNode(object.node(frame: subFrame))
 //        scene.rootNode.addChildNode(BoundingBox().node(frame: frame))
         
         let camera = SCNCamera()
@@ -50,7 +52,7 @@ public class UI3View: UIView {
         camera.usesOrthographicProjection = UI3Defaults.orthoCamera
         let cameraNode = SCNNode()
         cameraNode.camera = camera
-        cameraNode.position = SCNVector3(0.0, 0.0, 2.5)
+        cameraNode.position = SCNVector3(frame.position.x, frame.position.y, 2.5)
         scene.rootNode.addChildNode(cameraNode)
         
         layout()

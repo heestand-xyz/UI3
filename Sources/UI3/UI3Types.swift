@@ -159,7 +159,7 @@ public struct UI3Frame: Equatable {
     }
     
     public static func +* (lhs: UI3Frame, rhs: UI3Frame) -> UI3Frame {
-        UI3Frame(origin: lhs.origin + rhs.origin, size: lhs.size * rhs.size)
+        UI3Frame(origin: lhs.origin + rhs.origin * lhs.size, size: lhs.size * rhs.size)
     }
     
     public func withPadding(edges: UI3Edges, length: CGFloat) -> UI3Frame {
