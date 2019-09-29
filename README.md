@@ -28,3 +28,37 @@ struct ContentView: View {
     }
 }
 ~~~~
+
+<img src="https://github.com/hexagons/UI3/blob/master/Images/ui3_stacks_wstack.png?raw=true" height="256"/>
+
+~~~~swift
+import SwiftUI
+import UI3
+
+struct ContentView: View {
+    var body: some View {
+        UI3 {
+            WStack {
+                Box()
+                    .cornerRadius(0.05)
+                    .padding(edges: .all, length: 0.1)
+                HStack {
+                    ForEach(0..<3) { _ in
+                        VStack {
+                            ForEach(0..<3) { _ in
+                                ZStack {
+                                    ForEach(0..<3) { _ in
+                                        Box()
+                                            .cornerRadius(0.05)
+                                            .padding(edges: .all, length: 0.05)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+~~~~
