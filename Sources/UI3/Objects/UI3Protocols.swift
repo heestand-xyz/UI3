@@ -46,6 +46,7 @@ public protocol UI3ModifierSingle: UI3Modifier {
 
 public protocol UI3ModifierArray: UI3Modifier {
  
+    init(@UI3Builder _ object: () -> (UI3Object))
     init(@UI3Builder _ objects: () -> ([UI3Object]))
-    
+
 }

@@ -14,6 +14,9 @@ public struct UI3: UIViewRepresentable {
 
 @_functionBuilder
 public struct UI3Builder {
+    public static func buildBlock(_ child: UI3Object) -> UI3Object {
+        return child
+    }
     public static func buildBlock(_ children: UI3Object...) -> [UI3Object] {
         return children
     }

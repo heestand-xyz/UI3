@@ -14,6 +14,9 @@ public struct HStack: UI3ModifierArray {
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
+    public init(@UI3Builder _ object: () -> (UI3Object)) {
+        self.objects = [object()]
+    }
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -42,6 +45,9 @@ public struct VStack: UI3ModifierArray {
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
+    public init(@UI3Builder _ object: () -> (UI3Object)) {
+        self.objects = [object()]
+    }
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -70,6 +76,9 @@ public struct ZStack: UI3ModifierArray {
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
+    public init(@UI3Builder _ object: () -> (UI3Object)) {
+        self.objects = [object()]
+    }
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -98,6 +107,9 @@ public struct WStack: UI3ModifierArray {
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
+    public init(@UI3Builder _ object: () -> (UI3Object)) {
+        self.objects = [object()]
+    }
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -132,6 +144,10 @@ struct Stack: UI3ModifierArray {
     
     // MARK: - Life Cycle
     
+    public init(@UI3Builder _ object: () -> (UI3Object)) {
+        self.objects = [object()]
+    }
+    
     init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
@@ -145,11 +161,22 @@ struct Stack: UI3ModifierArray {
     
     func node(frame: UI3Frame) -> SCNNode {
         
+        var allObjects: [UI3Object] = []
+        for object in objects {
+            if let forEach = object as? ForEach {
+                for object in forEach.objects {
+                    allObjects.append(object)
+                }
+            } else {
+                allObjects.append(object)
+            }
+        }
+        
         let node = SCNNode()
         
         var segments: [CGFloat?] = []
         if let axis = self.axis {
-            for object in objects {
+            for object in allObjects {
                 let size: CGFloat? = {
                     switch axis {
                     case .x: return object.width
@@ -167,8 +194,7 @@ struct Stack: UI3ModifierArray {
         let lefoverFraction: CGFloat = leftoverCount > 0 ? leftoverTotalFraction / CGFloat(leftoverCount) : 0.0
         
         var position: CGFloat = 0.0
-        print("-------")
-        for object in objects {
+        for object in allObjects {
             
             var subFrame: UI3Frame = .one
             
@@ -188,19 +214,14 @@ struct Stack: UI3ModifierArray {
                                     size: UI3Scale(x: axis == .x ? size : 1.0,
                                                    y: axis == .y ? size : 1.0,
                                                    z: axis == .z ? size : 1.0))
-//                print(subFrame)
-                subFrame = subFrame.withPadding(edges: object.paddingEdges, length: object.paddingLength)
-//                print(subFrame)
-                
                 position += size
                 
             }
-            print("---")
+            
             let comboFrame = frame +* subFrame
-            print(frame)
-            print(subFrame)
-            print(comboFrame)
-            let subNode = object.node(frame: comboFrame)
+            let finalFrame = comboFrame.withPadding(edges: object.paddingEdges, length: object.paddingLength)
+            
+            let subNode = object.node(frame: finalFrame)
             node.addChildNode(subNode)
             
             if UI3Defaults.debug {
