@@ -43,10 +43,14 @@ public struct BoundingBox: UI3Content {
                 for z in 0..<2 {
                     let zWay = CGFloat(z * 2) - 1.0
                     
-//                    let axis = Axis(color: color)
-//                    axis.node.position = SCNVector3(xWay / 2, yWay / 2, zWay / 2)
-//                    axis.node.scale = SCNVector3(-xWay, -yWay, -zWay)
-//                    node.addChildNode(axis.node)
+                    let axis = Axis()
+//                        .color(color)
+                    
+                    let position = UI3Position(x: xWay / 2, y: yWay / 2, z: zWay / 2)
+                    let size = UI3Scale(x: xWay * 0.1, y: yWay * 0.1, z: zWay * 0.1)
+                    let axisNode = axis.node(frame: UI3Frame(position: position, size: size))
+                    
+                    node.addChildNode(axisNode)
                     
                 }
             }

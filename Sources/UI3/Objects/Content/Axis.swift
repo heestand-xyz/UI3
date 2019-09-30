@@ -19,34 +19,34 @@ public struct Axis: UI3Content {
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
     
+    var rgbColor: Bool = true
+    
     // MARK: - Life Cycle
     
     public init() {}
     
     // MARK: - Axie
     
-    func axie(axis: UI3Axis, color: UIColor) -> SCNNode {
+    func axie(frame: UI3Frame, axis: UI3Axis, color: UIColor) -> SCNNode {
         
-        let length: CGFloat = 0.1
-        let width: CGFloat = 0.005
+        let sizeFraction: CGFloat = 0.1
         let cornerRadius: CGFloat = 0.0025
         
-//        let box = Box()
-//        let box = Box(width: axis == .x ? length : width,
-//                      height: axis == .y ? length : width,
-//                      length: axis == .z ? length : width,
-//                      cornerRadius: cornerRadius,
-//                      color: color,
-//                      shading: .constant,
-//                      isDoubleSided: true)
+        let box = Box()
+            .cornerRadius(cornerRadius)
+            .color(color)
+            .shading(.constant)
+            .isDoubleSided(true)
         
-//        box.node.position = SCNVector3(axis == .x ? length / 2 : 0,
-//                                       axis == .y ? length / 2 : 0,
-//                                       axis == .z ? length / 2 : 0)
-//
-//        return box.node
-       
-        return SCNNode()
+        let origin = UI3Position(x: axis == .x ? frame.origin.x + sizeFraction : 0,
+                                 y: axis == .y ? frame.origin.y + sizeFraction : 0,
+                                 z: axis == .z ? frame.origin.z + sizeFraction : 0)
+        
+        let size = UI3Scale(x: frame.size.x * (axis == .x ? 1.0 - sizeFraction : sizeFraction),
+                            y: frame.size.y * (axis == .y ? 1.0 - sizeFraction : sizeFraction),
+                            z: frame.size.z * (axis == .z ? 1.0 - sizeFraction : sizeFraction))
+
+        return box.node(frame: UI3Frame(origin: origin, size: size))
         
     }
     
@@ -56,9 +56,9 @@ public struct Axis: UI3Content {
         
         let node = SCNNode()
         
-        node.addChildNode(axie(axis: .x, color: color ?? .red))
-        node.addChildNode(axie(axis: .y, color: color ?? .green))
-        node.addChildNode(axie(axis: .z, color: color ?? .blue))
+        node.addChildNode(axie(frame: frame, axis: .x, color: rgbColor ? .red : color))
+        node.addChildNode(axie(frame: frame, axis: .y, color: rgbColor ? .green : color))
+        node.addChildNode(axie(frame: frame, axis: .z, color: rgbColor ? .blue : color))
         
         return node
         
@@ -86,6 +86,7 @@ public struct Axis: UI3Content {
     public func color(_ value: UIColor) -> UI3Content {
         var content = self
         content.color = value
+        content.rgbColor = false
         return content
     }
     
