@@ -8,6 +8,7 @@
 import SceneKit
 
 public struct ForEach: UI3ModifierSingle {
+    public let name: String = "ForEach"
     public var objects: [UI3Object]
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil

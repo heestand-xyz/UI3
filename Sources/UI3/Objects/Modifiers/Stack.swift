@@ -8,10 +8,11 @@
 import SceneKit
 
 public struct HStack: UI3ModifierArray {
+    public let name: String = "HStack"
     public var objects: [UI3Object]
     public var width: CGFloat? = nil
-    public var height: CGFloat? = nil
-    public var length: CGFloat? = nil
+    public var height: CGFloat? { height(for: objects) }
+    public var length: CGFloat? { length(for: objects) }
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     public init(@UI3Builder _ object: () -> (UI3Object)) {
@@ -26,8 +27,8 @@ public struct HStack: UI3ModifierArray {
     public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
         var object = self
         if width != nil { object.width = width }
-        if height != nil { object.height = height }
-        if length != nil { object.length = length }
+//        if height != nil { object.height = height }
+//        if length != nil { object.length = length }
         return object
     }
     public func padding(edges: UI3Edges, length: CGFloat) -> UI3Object {
@@ -39,10 +40,11 @@ public struct HStack: UI3ModifierArray {
 }
 
 public struct VStack: UI3ModifierArray {
+    public let name: String = "VStack"
     public var objects: [UI3Object]
-    public var width: CGFloat? = nil
+    public var width: CGFloat? { width(for: objects) }
     public var height: CGFloat? = nil
-    public var length: CGFloat? = nil
+    public var length: CGFloat? { length(for: objects) }
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     public init(@UI3Builder _ object: () -> (UI3Object)) {
@@ -56,9 +58,9 @@ public struct VStack: UI3ModifierArray {
     }
     public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
         var object = self
-        if width != nil { object.width = width }
+//        if width != nil { object.width = width }
         if height != nil { object.height = height }
-        if length != nil { object.length = length }
+//        if length != nil { object.length = length }
         return object
     }
     public func padding(edges: UI3Edges, length: CGFloat) -> UI3Object {
@@ -70,9 +72,10 @@ public struct VStack: UI3ModifierArray {
 }
 
 public struct ZStack: UI3ModifierArray {
+    public let name: String = "ZStack"
     public var objects: [UI3Object]
-    public var width: CGFloat? = nil
-    public var height: CGFloat? = nil
+    public var width: CGFloat? { width(for: objects) }
+    public var height: CGFloat? { height(for: objects) }
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
@@ -87,8 +90,8 @@ public struct ZStack: UI3ModifierArray {
     }
     public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
         var object = self
-        if width != nil { object.width = width }
-        if height != nil { object.height = height }
+//        if width != nil { object.width = width }
+//        if height != nil { object.height = height }
         if length != nil { object.length = length }
         return object
     }
@@ -101,10 +104,11 @@ public struct ZStack: UI3ModifierArray {
 }
 
 public struct WStack: UI3ModifierArray {
+    public let name: String = "WStack"
     public var objects: [UI3Object]
-    public var width: CGFloat? = nil
-    public var height: CGFloat? = nil
-    public var length: CGFloat? = nil
+    public var width: CGFloat? { width(for: objects) }
+    public var height: CGFloat? { height(for: objects) }
+    public var length: CGFloat? { length(for: objects) }
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     public init(@UI3Builder _ object: () -> (UI3Object)) {
@@ -118,9 +122,9 @@ public struct WStack: UI3ModifierArray {
     }
     public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
         var object = self
-        if width != nil { object.width = width }
-        if height != nil { object.height = height }
-        if length != nil { object.length = length }
+//        if width != nil { object.width = width }
+//        if height != nil { object.height = height }
+//        if length != nil { object.length = length }
         return object
     }
     public func padding(edges: UI3Edges, length: CGFloat) -> UI3Object {
@@ -136,6 +140,7 @@ struct Stack: UI3ModifierArray {
     var axis: UI3Axis? = nil
     var objects: [UI3Object]
     
+    public let name: String = "Stack"
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
@@ -171,20 +176,35 @@ struct Stack: UI3ModifierArray {
                 allObjects.append(object)
             }
         }
+        if let axis = self.axis {
+            if axis == .y {
+                allObjects.reverse()
+            }
+        }
         
         let node = SCNNode()
+        
+        func getSize(on axis: UI3Axis, for object: UI3Object) -> CGFloat? {
+            var size: CGFloat?
+            switch axis {
+            case .x: size = object.width
+            case .y: size = object.height
+            case .z: size = object.length
+            }
+            if size != nil {
+                switch axis {
+                case .x: size! += (object.paddingEdges.left ? object.paddingLength : 0.0) + (object.paddingEdges.right ? object.paddingLength : 0.0)
+                case .y: size! += (object.paddingEdges.bottom ? object.paddingLength : 0.0) + (object.paddingEdges.top ? object.paddingLength : 0.0)
+                case .z: size! += (object.paddingEdges.far ? object.paddingLength : 0.0) + (object.paddingEdges.near ? object.paddingLength : 0.0)
+                }
+            }
+            return size
+        }
         
         var segments: [CGFloat?] = []
         if let axis = self.axis {
             for object in allObjects {
-                let size: CGFloat? = {
-                    switch axis {
-                    case .x: return object.width
-                    case .y: return object.height
-                    case .z: return object.length
-                    }
-                }()
-                segments.append(size)
+                segments.append(getSize(on: axis, for: object))
             }
         }
         let totalSegments: CGFloat = segments.compactMap({$0}).reduce(0, { $0 + $1 })
@@ -192,21 +212,18 @@ struct Stack: UI3ModifierArray {
         let leftoverTotalFraction: CGFloat = max(1.0 - totalSegments, 0.0)
         let leftoverCount: Int = segments.filter({ $0 == nil }).count
         let lefoverFraction: CGFloat = leftoverCount > 0 ? leftoverTotalFraction / CGFloat(leftoverCount) : 0.0
-        
+
         var position: CGFloat = 0.0
         for object in allObjects {
             
             var subFrame: UI3Frame = .one
+
+            var localSize: CGFloat?
             
             if let axis = self.axis {
                 
-                let size: CGFloat = {
-                    switch axis {
-                    case .x: return object.width
-                    case .y: return object.height
-                    case .z: return object.length
-                    }
-                }() ?? lefoverFraction
+                localSize = getSize(on: axis, for: object)
+                let size = localSize ?? lefoverFraction
                 
                 subFrame = UI3Frame(origin: UI3Position(x: axis == .x ? position : 0.0,
                                                         y: axis == .y ? position : 0.0,
@@ -218,8 +235,15 @@ struct Stack: UI3ModifierArray {
                 
             }
             
-            let comboFrame = frame +* subFrame
-            let finalFrame = comboFrame.withPadding(edges: object.paddingEdges, length: object.paddingLength)
+            var finalFrame = frame +* subFrame
+            if object.paddingEdges != .none {
+                finalFrame = finalFrame.innerPadding(edges: object.paddingEdges, length: object.paddingLength)
+            }
+            
+            print("-------", object.name)
+            print("frame:", frame)
+            print("subFrame:", subFrame)
+            print("finalFrame:", finalFrame)
             
             let subNode = object.node(frame: finalFrame)
             node.addChildNode(subNode)

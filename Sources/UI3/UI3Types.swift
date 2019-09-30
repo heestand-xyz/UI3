@@ -69,6 +69,7 @@ public enum UI3Edges {
 }
 
 public typealias UI3Scale = UI3Vector
+public typealias UI3Size = UI3Vector
 public typealias UI3Position = UI3Vector
 public typealias UI3Rotation = UI3Vector
 public struct UI3Vector: Equatable {
@@ -177,6 +178,35 @@ public struct UI3Frame: Equatable {
         UI3Frame(origin: .zero, size: .one)
     }
     
+    public var minX: CGFloat {
+        origin.x + size.x
+    }
+    public var minY: CGFloat {
+        origin.y + size.y
+    }
+    public var minZ: CGFloat {
+        origin.z + size.z
+    }
+    public var maxX: CGFloat {
+        origin.x + size.x
+    }
+    public var maxY: CGFloat {
+        origin.y + size.y
+    }
+    public var maxZ: CGFloat {
+        origin.z + size.z
+    }
+    
+    public var width: CGFloat {
+        size.x
+    }
+    public var height: CGFloat {
+        size.y
+    }
+    public var length: CGFloat {
+        size.z
+    }
+    
     public init(origin: UI3Position, size: UI3Scale) {
         self.origin = origin
         self.size = size
@@ -190,13 +220,22 @@ public struct UI3Frame: Equatable {
         UI3Frame(origin: lhs.origin + rhs.origin * lhs.size, size: lhs.size * rhs.size)
     }
     
-    public func withPadding(edges: UI3Edges, length: CGFloat) -> UI3Frame {
+    public func innerPadding(edges: UI3Edges, length: CGFloat) -> UI3Frame {
         return UI3Frame(origin: UI3Position(x: origin.x + (edges.left ? length : 0.0),
                                             y: origin.y + (edges.bottom ? length : 0.0),
                                             z: origin.z + (edges.far ? length : 0.0)),
                         size: UI3Scale(x: size.x - (edges.left ? length : 0.0) - (edges.right ? length : 0.0),
                                        y: size.y - (edges.bottom ? length : 0.0) - (edges.top ? length : 0.0),
                                        z: size.z - (edges.far ? length : 0.0) - (edges.near ? length : 0.0)))
+    }
+    
+    public func outerPadding(edges: UI3Edges, length: CGFloat) -> UI3Frame {
+        return UI3Frame(origin: UI3Position(x: origin.x - (edges.left ? length : 0.0),
+                                            y: origin.y - (edges.bottom ? length : 0.0),
+                                            z: origin.z - (edges.far ? length : 0.0)),
+                        size: UI3Scale(x: size.x + (edges.left ? length : 0.0) + (edges.right ? length : 0.0),
+                                       y: size.y + (edges.bottom ? length : 0.0) + (edges.top ? length : 0.0),
+                                       z: size.z + (edges.far ? length : 0.0) + (edges.near ? length : 0.0)))
     }
     
 }

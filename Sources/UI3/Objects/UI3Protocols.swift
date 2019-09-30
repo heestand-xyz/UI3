@@ -8,10 +8,11 @@
 import SceneKit
 
 public protocol UI3Object {
-    
-    var width: CGFloat? { get set }
-    var height: CGFloat? { get set }
-    var length: CGFloat? { get set }
+        
+    var name: String { get }
+    var width: CGFloat? { get }
+    var height: CGFloat? { get }
+    var length: CGFloat? { get }
     var paddingEdges: UI3Edges { get set }
     var paddingLength: CGFloat { get set }
 
@@ -25,6 +26,8 @@ public protocol UI3Object {
 public protocol UI3Content: UI3Object {
     
     init()
+    
+//    var size: UI3Size? { get }
     
     func color(_ value: UIColor) -> UI3Content
     func shading(_ value: UI3Shading) -> UI3Content

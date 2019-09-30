@@ -9,12 +9,14 @@ import SceneKit
 
 public struct Box: UI3Content {
     
+    public let name: String = "Box"
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
+    public var size: UI3Size? { return nil }
     var color: UIColor = .white
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false

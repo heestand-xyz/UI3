@@ -8,6 +8,7 @@
 import SceneKit
 
 public struct Grid: UI3ModifierSingle {
+    public let name: String = "Grid"
     public var objects: [UI3Object]
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
