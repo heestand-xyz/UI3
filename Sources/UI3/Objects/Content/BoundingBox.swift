@@ -21,7 +21,13 @@ public struct BoundingBox: UI3Content {
     
     // MARK: - Life Cycle
     
-    public init() {}
+    public init() {
+        if #available(iOS 10.0, *) {
+            color = UIColor(displayP3Red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
+        } else {
+            color = UIColor(red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
+        }
+    }
     
     // MARK: - Node
     
@@ -29,26 +35,39 @@ public struct BoundingBox: UI3Content {
         
         let node = SCNNode()
         
-        let color: UIColor
-        if #available(iOS 10.0, *) {
-            color = UIColor(displayP3Red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
-        } else {
-            color = UIColor(red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
-        }
-        
         for x in 0..<2 {
-            let xWay = CGFloat(x * 2) - 1.0
+            let xf = CGFloat(x)
             for y in 0..<2 {
-                let yWay = CGFloat(y * 2) - 1.0
+                let yf = CGFloat(y)
                 for z in 0..<2 {
-                    let zWay = CGFloat(z * 2) - 1.0
-                    
+                    let zf = CGFloat(z)
+                                        
                     let axis = Axis()
-//                        .color(color)
+                        .color(color)
                     
-                    let position = UI3Position(x: xWay / 2, y: yWay / 2, z: zWay / 2)
-                    let size = UI3Scale(x: xWay * 0.1, y: yWay * 0.1, z: zWay * 0.1)
-                    let axisNode = axis.node(frame: UI3Frame(position: position, size: size))
+                    let origin = UI3Position(x: frame.origin.x + xf * frame.size.x,
+                                             y: frame.origin.y + yf * frame.size.y,
+                                             z: frame.origin.z + zf * frame.size.z)
+                    let size = UI3Scale(x: 0.1, y: 0.1, z: 0.1)
+                    let frame = UI3Frame(origin: .zero, size: size)
+                    
+                    let axisNode = axis.node(frame: frame)
+                    
+                    let xyz = x + y + z
+                    if xyz == 1 {
+                        let r: CGFloat = -.pi / 2
+                        axisNode.eulerAngles = SCNVector3(z == 1 ? r : 0.0,
+                                                          x == 1 ? r : 0.0,
+                                                          y == 1 ? r : 0.0)
+                    } else if xyz == 2 {
+                        let r: CGFloat = .pi
+                        axisNode.eulerAngles = SCNVector3(x == 0 ? r : 0.0,
+                                                          y == 0 ? r : 0.0,
+                                                          z == 0 ? r : 0.0)
+                    } else if xyz == 3 {
+                        axisNode.eulerAngles = SCNVector3(-.pi / 2, 0.0, .pi)
+                    }
+                    axisNode.position = (origin).scnVector3
                     
                     node.addChildNode(axisNode)
                     

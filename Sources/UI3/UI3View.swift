@@ -31,20 +31,29 @@ public class UI3View: UIView {
         let frame = UI3Frame(origin: .zero, size: UI3Scale(x: 1.0, y: 1.0, z: 1.0))
 
         if UI3Defaults.debug {
+            
 //            view.debugOptions.insert(.showWireframe)
             view.showsStatistics = true
+            
             let box = SCNBox(width: frame.size.x, height: frame.size.y, length: frame.size.z, chamferRadius: 0.0)
             if #available(iOS 11.0, *) {
                 box.firstMaterial!.fillMode = .lines
             }
+            box.firstMaterial!.isDoubleSided = true
             let boxNode = SCNNode(geometry: box)
             boxNode.position = frame.position.scnVector3
             scene.rootNode.addChildNode(boxNode)
+            
         }
         
         let subFrame = frame.withPadding(edges: object.paddingEdges, length: object.paddingLength)
         scene.rootNode.addChildNode(object.node(frame: subFrame))
-//        scene.rootNode.addChildNode(BoundingBox().node(frame: frame))
+        
+        if UI3Defaults.boundingBox {
+            let boundingBox = BoundingBox()
+            let boundingBoxNode = boundingBox.node(frame: frame)
+            scene.rootNode.addChildNode(boundingBoxNode)
+        }
         
         let camera = SCNCamera()
         camera.zNear = 0.001
@@ -52,7 +61,7 @@ public class UI3View: UIView {
         camera.usesOrthographicProjection = UI3Defaults.orthoCamera
         let cameraNode = SCNNode()
         cameraNode.camera = camera
-        cameraNode.position = SCNVector3(frame.position.x, frame.position.y, 2.5)
+        cameraNode.position = SCNVector3(frame.position.x, frame.position.y, 3.0)
         scene.rootNode.addChildNode(cameraNode)
         
         layout()

@@ -36,15 +36,15 @@ public struct Axis: UI3Content {
             .cornerRadius(cornerRadius)
             .color(color)
             .shading(.constant)
-            .isDoubleSided(true)
+            .isDoubleSided(isDoubleSided)
         
-        let origin = UI3Position(x: axis == .x ? frame.origin.x + sizeFraction : 0,
-                                 y: axis == .y ? frame.origin.y + sizeFraction : 0,
-                                 z: axis == .z ? frame.origin.z + sizeFraction : 0)
+        let origin = UI3Position(x: frame.origin.x + (axis == .x ? frame.size.x * sizeFraction * 2 : 0.0),
+                                 y: frame.origin.y + (axis == .y ? frame.size.y * sizeFraction * 2 : 0.0),
+                                 z: frame.origin.z + (axis == .z ? frame.size.z * sizeFraction * 2 : 0.0))
         
-        let size = UI3Scale(x: frame.size.x * (axis == .x ? 1.0 - sizeFraction : sizeFraction),
-                            y: frame.size.y * (axis == .y ? 1.0 - sizeFraction : sizeFraction),
-                            z: frame.size.z * (axis == .z ? 1.0 - sizeFraction : sizeFraction))
+        let size = UI3Scale(x: frame.size.x * (axis == .x ? 1.0 - sizeFraction * 2 : sizeFraction),
+                            y: frame.size.y * (axis == .y ? 1.0 - sizeFraction * 2 : sizeFraction),
+                            z: frame.size.z * (axis == .z ? 1.0 - sizeFraction * 2 : sizeFraction))
 
         return box.node(frame: UI3Frame(origin: origin, size: size))
         

@@ -28,7 +28,7 @@ public struct Box: UI3Content {
     // MARK: - Node
     
     public func node(frame: UI3Frame) -> SCNNode {
-        
+
         let box = SCNBox(width: frame.size.x,
                          height: frame.size.y,
                          length: frame.size.z,

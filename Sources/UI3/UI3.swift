@@ -23,6 +23,7 @@ public struct UI3Builder {
 }
 
 public struct UI3Defaults {
+    public static var boundingBox = true
     public static var debug = false
     public static var wireframe = false
     public static var orthoCamera = false

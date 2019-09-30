@@ -61,7 +61,7 @@ public enum UI3Edges {
     func on(axis: UI3Axis) -> Bool {
         switch axis {
         case .x: return left || right
-        case .y: return top || bottom
+        case .y: return top || bottom
         case .z: return far || near
         }
     }
@@ -70,6 +70,7 @@ public enum UI3Edges {
 
 public typealias UI3Scale = UI3Vector
 public typealias UI3Position = UI3Vector
+public typealias UI3Rotation = UI3Vector
 public struct UI3Vector: Equatable {
     
     public let x: CGFloat
@@ -102,6 +103,12 @@ public struct UI3Vector: Equatable {
     public static func + (lhs: CGFloat, rhs: UI3Vector) -> UI3Vector {
         UI3Vector(x: lhs + rhs.x, y: lhs + rhs.y, z: lhs + rhs.z)
     }
+    public static func += (lhs: inout UI3Vector, rhs: UI3Vector) {
+        lhs = lhs + rhs
+    }
+    public static func += (lhs: inout UI3Vector, rhs: CGFloat) {
+        lhs = lhs + rhs
+    }
     
     public static func - (lhs: UI3Vector, rhs: UI3Vector) -> UI3Vector {
         UI3Vector(x: lhs.x - rhs.x, y: lhs.y - rhs.y, z: lhs.z - rhs.z)
@@ -111,6 +118,15 @@ public struct UI3Vector: Equatable {
     }
     public static func - (lhs: CGFloat, rhs: UI3Vector) -> UI3Vector {
         UI3Vector(x: lhs - rhs.x, y: lhs - rhs.y, z: lhs - rhs.z)
+    }
+    public static func -= (lhs: inout UI3Vector, rhs: UI3Vector) {
+        lhs = lhs - rhs
+    }
+    public static func -= (lhs: inout UI3Vector, rhs: CGFloat) {
+        lhs = lhs - rhs
+    }
+    public prefix static func - (operand: UI3Vector) -> UI3Vector {
+        UI3Vector(x: -operand.x, y: -operand.y, z: -operand.z)
     }
     
     public static func * (lhs: UI3Vector, rhs: UI3Vector) -> UI3Vector {
@@ -122,6 +138,12 @@ public struct UI3Vector: Equatable {
     public static func * (lhs: CGFloat, rhs: UI3Vector) -> UI3Vector {
         UI3Vector(x: lhs * rhs.x, y: lhs * rhs.y, z: lhs * rhs.z)
     }
+    public static func *= (lhs: inout UI3Vector, rhs: UI3Vector) {
+        lhs = lhs * rhs
+    }
+    public static func *= (lhs: inout UI3Vector, rhs: CGFloat) {
+        lhs = lhs * rhs
+    }
     
     public static func / (lhs: UI3Vector, rhs: UI3Vector) -> UI3Vector {
         UI3Vector(x: lhs.x / rhs.x, y: lhs.y / rhs.y, z: lhs.z / rhs.z)
@@ -131,6 +153,12 @@ public struct UI3Vector: Equatable {
     }
     public static func / (lhs: CGFloat, rhs: UI3Vector) -> UI3Vector {
         UI3Vector(x: lhs / rhs.x, y: lhs / rhs.y, z: lhs / rhs.z)
+    }
+    public static func /= (lhs: inout UI3Vector, rhs: UI3Vector) {
+        lhs = lhs / rhs
+    }
+    public static func /= (lhs: inout UI3Vector, rhs: CGFloat) {
+        lhs = lhs / rhs
     }
     
 }
