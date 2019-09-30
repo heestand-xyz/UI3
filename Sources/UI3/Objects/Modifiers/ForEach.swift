@@ -24,7 +24,7 @@ public struct ForEach: UI3ModifierSingle {
         }
     }
     public func node(frame: UI3Frame) -> SCNNode {
-        Stack(axis: .x, { objects }).node(frame: frame)
+        return SCNNode()
     }
     public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
         return self
