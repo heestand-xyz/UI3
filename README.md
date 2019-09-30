@@ -29,6 +29,8 @@ struct ContentView: View {
 }
 ~~~~
 
+------
+
 <img src="https://github.com/hexagons/UI3/blob/master/Images/ui3_stacks_wstack.png?raw=true" height="256"/>
 
 ~~~~swift
@@ -56,6 +58,31 @@ struct ContentView: View {
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+}
+~~~~
+
+------
+
+<img src="https://github.com/hexagons/UI3/blob/master/Images/ui3_stacks_sphere.jpg?raw=true" height="256"/>
+
+~~~~swift
+import SwiftUI
+import UI3
+
+struct ContentView: View {
+    var body: some View {
+        UI3 {
+            WStack {
+                Sphere()
+                    .padding(edges: .all, length: 0.15)
+                Grid(x: 0..<3, y: 0..<3, z: 0..<3) {
+                    Box()
+                        .cornerRadius(0.025)
+                        .padding(edges: .all, length: 0.1)
                 }
             }
         }
