@@ -89,3 +89,29 @@ struct ContentView: View {
     }
 }
 ~~~~
+
+------
+
+<img src="https://github.com/hexagons/UI3/blob/master/Images/ui3_model.png?raw=true" height="256"/>
+
+~~~~swift
+import SwiftUI
+import UI3
+
+struct ContentView: View {
+    var body: some View {
+        UI3 {
+            HStack {
+                Box().cornerRadius(0.1)
+                VStack {
+                    ZStack {
+                        Box().cornerRadius(0.1)
+                        Model("suzanne.obj")
+                    }
+                    Box().cornerRadius(0.1)
+                }
+            }
+        }
+    }
+}
+~~~~
