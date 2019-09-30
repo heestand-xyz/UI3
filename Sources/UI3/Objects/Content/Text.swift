@@ -40,7 +40,7 @@ public struct Text: UI3Content {
     // MARK: - Node
     
     public func node(frame: UI3Frame) -> SCNNode {
-        print("text:", frame)
+
         text.firstMaterial!.lightingModel = shading.lightingModel
         text.firstMaterial!.diffuse.contents = color
         text.firstMaterial!.isDoubleSided = isDoubleSided || UI3Defaults.wireframe

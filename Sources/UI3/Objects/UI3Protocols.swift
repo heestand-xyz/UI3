@@ -35,6 +35,14 @@ public protocol UI3Content: UI3Object {
     
 }
 
+public protocol UI3Model: UI3Content {
+    
+    var aspectWidth: CGFloat { get }
+    var aspectHeight: CGFloat { get }
+    var aspectLength: CGFloat { get }
+    
+}
+
 public protocol UI3Modifier: UI3Object {
     
     var objects: [UI3Object] { get }

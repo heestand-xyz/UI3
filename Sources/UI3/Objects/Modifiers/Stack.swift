@@ -166,6 +166,19 @@ struct Stack: UI3ModifierArray {
     
     func node(frame: UI3Frame) -> SCNNode {
         
+        let node = SCNNode()
+        
+        if UI3Defaults.debug {
+            let box = SCNBox(width: frame.size.x, height: frame.size.y, length: frame.size.z, chamferRadius: 0.0)
+            if #available(iOS 11.0, *) {
+                box.firstMaterial!.fillMode = .lines
+            }
+            box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
+            let boxNode = SCNNode(geometry: box)
+            boxNode.position = frame.position.scnVector3
+            node.addChildNode(boxNode)
+        }
+        
         var allObjects: [UI3Object] = []
         for object in objects {
             if let forEach = object as? ForEach {
@@ -182,14 +195,36 @@ struct Stack: UI3ModifierArray {
             }
         }
         
-        let node = SCNNode()
-        
         func getSize(on axis: UI3Axis, for object: UI3Object) -> CGFloat? {
             var size: CGFloat?
             switch axis {
             case .x: size = object.width
             case .y: size = object.height
             case .z: size = object.length
+            }
+            if size == nil {
+                if let model = object as? UI3Model {
+                    switch axis {
+                    case .x:
+                        let aspectY = model.aspectWidth / model.aspectHeight
+                        let sizeY = frame.size.y * aspectY
+                        let aspectZ = model.aspectWidth / model.aspectLength
+                        let sizeZ = frame.size.z * aspectZ
+                        size = min(sizeY, sizeZ)
+                    case .y:
+                        let aspectX = model.aspectHeight / model.aspectWidth
+                        let sizeX = frame.size.x * aspectX
+                        let aspectZ = model.aspectHeight / model.aspectLength
+                        let sizeZ = frame.size.z * aspectZ
+                        size = min(sizeX, sizeZ)
+                    case .z:
+                        let aspectX = model.aspectLength / model.aspectWidth
+                        let sizeX = frame.size.x * aspectX
+                        let aspectY = model.aspectLength / model.aspectHeight
+                        let sizeY = frame.size.y * aspectY
+                        size = min(sizeX, sizeY)
+                    }
+                }
             }
             if size != nil {
                 switch axis {
@@ -240,22 +275,17 @@ struct Stack: UI3ModifierArray {
                 finalFrame = finalFrame.innerPadding(edges: object.paddingEdges, length: object.paddingLength)
             }
             
-            print("-------", object.name)
-            print("frame:", frame)
-            print("subFrame:", subFrame)
-            print("finalFrame:", finalFrame)
-            
             let subNode = object.node(frame: finalFrame)
             node.addChildNode(subNode)
             
             if UI3Defaults.debug {
-                let box = SCNBox(width: frame.size.x, height: frame.size.y, length: frame.size.z, chamferRadius: 0.0)
+                let box = SCNBox(width: finalFrame.size.x, height: finalFrame.size.y, length: finalFrame.size.z, chamferRadius: 0.0)
                 if #available(iOS 11.0, *) {
                     box.firstMaterial!.fillMode = .lines
                 }
                 box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
                 let boxNode = SCNNode(geometry: box)
-                boxNode.position = frame.position.scnVector3
+                boxNode.position = finalFrame.position.scnVector3
                 node.addChildNode(boxNode)
             }
             
