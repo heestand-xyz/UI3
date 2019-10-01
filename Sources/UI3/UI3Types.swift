@@ -74,9 +74,9 @@ public typealias UI3Position = UI3Vector
 public typealias UI3Rotation = UI3Vector
 public struct UI3Vector: Equatable {
     
-    public let x: CGFloat
-    public let y: CGFloat
-    public let z: CGFloat
+    public var x: CGFloat
+    public var y: CGFloat
+    public var z: CGFloat
     
     var scnVector3: SCNVector3 {
         SCNVector3(x, y, z)
@@ -167,8 +167,8 @@ public struct UI3Vector: Equatable {
 public typealias UI3Bounds = UI3Frame
 public struct UI3Frame: Equatable {
     
-    public let origin: UI3Position
-    public let size: UI3Scale
+    public var origin: UI3Position
+    public var size: UI3Scale
     
     public var position: UI3Position {
         origin + (size / 2)

@@ -46,8 +46,23 @@ public class UI3View: UIView {
             
         }
         
-        let subFrame = frame.innerPadding(edges: object.paddingEdges, length: object.paddingLength)
-        scene.rootNode.addChildNode(object.node(frame: subFrame))
+        let paddingFrame = frame.innerPadding(edges: object.paddingEdges, length: object.paddingLength)
+        var framedSize = frame.size
+        var framed = false
+        if let w = object.width {
+            framedSize.x = w
+            framed = true
+        }
+        if let h = object.height {
+            framedSize.y = h
+            framed = true
+        }
+        if let l = object.length {
+            framedSize.z = l
+            framed = true
+        }
+        let finalFrame = framed ? UI3Frame(position: frame.position, size: framedSize) : paddingFrame
+        scene.rootNode.addChildNode(object.node(frame: finalFrame))
         
         if UI3Defaults.boundingBox {
             let boundingBox = BoundingBox()
