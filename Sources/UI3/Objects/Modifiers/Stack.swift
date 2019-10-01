@@ -304,49 +304,6 @@ struct Stack: UI3ModifierArray {
         return object
     }
     
-    // MARK: - Size
-    
-    static func getSize(on axis: UI3Axis, for object: UI3Object, in size: UI3Size) -> CGFloat? {
-        var totalSize: CGFloat?
-        switch axis {
-        case .x: totalSize = object.width
-        case .y: totalSize = object.height
-        case .z: totalSize = object.length
-        }
-        if totalSize == nil {
-            if let model = object as? UI3Model {
-                switch axis {
-                case .x:
-                    let aspectY = model.aspectWidth / model.aspectHeight
-                    let sizeY = size.y * aspectY
-                    let aspectZ = model.aspectWidth / model.aspectLength
-                    let sizeZ = size.z * aspectZ
-                    totalSize = min(sizeY, sizeZ)
-                case .y:
-                    let aspectX = model.aspectHeight / model.aspectWidth
-                    let sizeX = size.x * aspectX
-                    let aspectZ = model.aspectHeight / model.aspectLength
-                    let sizeZ = size.z * aspectZ
-                    totalSize = min(sizeX, sizeZ)
-                case .z:
-                    let aspectX = model.aspectLength / model.aspectWidth
-                    let sizeX = size.x * aspectX
-                    let aspectY = model.aspectLength / model.aspectHeight
-                    let sizeY = size.y * aspectY
-                    totalSize = min(sizeX, sizeY)
-                }
-            }
-        }
-        if totalSize != nil {
-            switch axis {
-            case .x: totalSize! += (object.paddingEdges.left ? object.paddingLength : 0.0) + (object.paddingEdges.right ? object.paddingLength : 0.0)
-            case .y: totalSize! += (object.paddingEdges.bottom ? object.paddingLength : 0.0) + (object.paddingEdges.top ? object.paddingLength : 0.0)
-            case .z: totalSize! += (object.paddingEdges.far ? object.paddingLength : 0.0) + (object.paddingEdges.near ? object.paddingLength : 0.0)
-            }
-        }
-        return totalSize
-    }
-    
     // MARK: - Segments
     
     static func getSegments(for objects: [UI3Object], in size: UI3Size, on axis: UI3Axis) -> [CGFloat?] {

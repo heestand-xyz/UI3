@@ -50,7 +50,7 @@ public class UI3View: UIView {
             scene.rootNode.addChildNode(boxNode)
             
         }
-        
+                
         let paddingFrame = globalFrame.innerPadding(edges: object.paddingEdges, length: object.paddingLength)
         var framedSize = globalFrame.size
         var framed = false
@@ -66,7 +66,12 @@ public class UI3View: UIView {
             framedSize.z = l
             framed = true
         }
-        objectFrame = framed ? UI3Frame(position: globalFrame.position, size: framedSize) : paddingFrame
+        let preFrame = framed ? UI3Frame(position: globalFrame.position, size: framedSize) : paddingFrame
+        let postSize = UI3Size(x: Box.getSize(on: .x, for: object, in: preFrame.size) ?? preFrame.size.x,
+                               y: Box.getSize(on: .y, for: object, in: preFrame.size) ?? preFrame.size.y,
+                               z: Box.getSize(on: .z, for: object, in: preFrame.size) ?? preFrame.size.z)
+        let postFrame = UI3Frame(position: preFrame.position, size: postSize)
+        objectFrame = postFrame
         scene.rootNode.addChildNode(object.node(frame: objectFrame))
         
         if UI3Defaults.boundingBox {
