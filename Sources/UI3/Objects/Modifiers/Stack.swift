@@ -10,12 +10,7 @@ import SceneKit
 public struct HStack: UI3ModifierArray {
     public let name: String = "HStack"
     public var objects: [UI3Object]
-    public var width: CGFloat? {
-        guard let h = height, let l = length else { return nil }
-        let segments: [CGFloat?] = Stack.getSegments(for: objects, in: UI3Size(x: 0.0, y: h, z: l), on: .x)
-        guard !segments.contains(nil) else { return nil }
-        return segments.reduce(0.0, { $0! + $1! })
-    }
+    public var width: CGFloat? { relWidth(height: height, length: length) }
     public var height: CGFloat? { height(for: objects) }
     public var length: CGFloat? { length(for: objects) }
     public var paddingEdges: UI3Edges = .none
@@ -49,7 +44,7 @@ public struct VStack: UI3ModifierArray {
     public let name: String = "VStack"
     public var objects: [UI3Object]
     public var width: CGFloat? { width(for: objects) }
-    public var height: CGFloat? = nil
+    public var height: CGFloat? { relHeight(width: width, length: length) }
     public var length: CGFloat? { length(for: objects) }
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
@@ -83,7 +78,7 @@ public struct ZStack: UI3ModifierArray {
     public var objects: [UI3Object]
     public var width: CGFloat? { width(for: objects) }
     public var height: CGFloat? { height(for: objects) }
-    public var length: CGFloat? = nil
+    public var length: CGFloat? { relLength(width: width, height: height) }
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     public init(@UI3Builder _ object: () -> (UI3Object)) {

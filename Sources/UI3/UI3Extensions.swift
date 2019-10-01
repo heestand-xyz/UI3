@@ -23,6 +23,13 @@ extension UI3Modifier {
         }
     }
     
+    func relWidth(height: CGFloat?, length: CGFloat?) -> CGFloat? {
+        guard let h = height, let l = length else { return nil }
+        let segments: [CGFloat?] = Stack.getSegments(for: objects, in: UI3Size(x: 0.0, y: h, z: l), on: .x)
+        guard !segments.contains(nil) else { return nil }
+        return segments.reduce(0.0, { $0! + $1! })
+    }
+    
     func height(for objects: [UI3Object]) -> CGFloat? {
         objects.reduce(nil) { result, object -> CGFloat? in
             if let v = object.height {
@@ -37,6 +44,13 @@ extension UI3Modifier {
         }
     }
     
+    func relHeight(width: CGFloat?, length: CGFloat?) -> CGFloat? {
+        guard let w = width, let l = length else { return nil }
+        let segments: [CGFloat?] = Stack.getSegments(for: objects, in: UI3Size(x: w, y: 0.0, z: l), on: .y)
+        guard !segments.contains(nil) else { return nil }
+        return segments.reduce(0.0, { $0! + $1! })
+    }
+    
     func length(for objects: [UI3Object]) -> CGFloat? {
         objects.reduce(nil) { result, object -> CGFloat? in
             if let v = object.length {
@@ -49,6 +63,13 @@ extension UI3Modifier {
             }
             return result
         }
+    }
+    
+    func relLength(width: CGFloat?, height: CGFloat?) -> CGFloat? {
+        guard let w = width, let h = height else { return nil }
+        let segments: [CGFloat?] = Stack.getSegments(for: objects, in: UI3Size(x: w, y: h, z: 0.0), on: .z)
+        guard !segments.contains(nil) else { return nil }
+        return segments.reduce(0.0, { $0! + $1! })
     }
     
 }
