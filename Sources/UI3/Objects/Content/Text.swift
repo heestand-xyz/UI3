@@ -74,13 +74,13 @@ public struct Text: UI3Content {
         return object
     }
     
-    // MARK: - Content
-    
-    public func color(_ value: UIColor) -> UI3Content {
-        var content = self
-        content.color = value
-        return content
+    public func color(_ value: UIColor) -> UI3Object {
+        var object = self
+        object.color = value
+        return object
     }
+    
+    // MARK: - Content
     
     public func shading(_ value: UI3Shading) -> UI3Content {
         var content = self

@@ -19,7 +19,6 @@ public struct Model: UI3Model {
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
-    public var size: UI3Size? { return nil }
     var color: UIColor? = nil
     var shading: UI3Shading? = nil
     var isDoubleSided: Bool? = nil
@@ -98,13 +97,13 @@ public struct Model: UI3Model {
         return object
     }
     
-    // MARK: - Content
-    
-    public func color(_ value: UIColor) -> UI3Content {
-        var content = self
-        content.color = value
-        return content
+    public func color(_ value: UIColor) -> UI3Object {
+        var object = self
+        object.color = value
+        return object
     }
+    
+    // MARK: - Content
     
     public func shading(_ value: UI3Shading) -> UI3Content {
         var content = self

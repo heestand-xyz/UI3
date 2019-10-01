@@ -49,4 +49,9 @@ public struct Grid: UI3ModifierSingle {
     public func padding(edges: UI3Edges, length: CGFloat) -> UI3Object {
         return self
     }
+    public func color(_ value: UIColor) -> UI3Object {
+        var object = self
+        object.objects = object.objects.map({ $0.color(value) })
+        return object
+    }
 }

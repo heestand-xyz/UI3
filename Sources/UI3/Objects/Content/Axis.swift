@@ -16,7 +16,6 @@ public struct Axis: UI3Content {
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
-    public var size: UI3Size? { return nil }
     var color: UIColor = .white
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
@@ -36,9 +35,9 @@ public struct Axis: UI3Content {
         
         let box = Box()
             .cornerRadius(cornerRadius)
-            .color(color)
             .shading(.constant)
             .isDoubleSided(isDoubleSided)
+            .color(color)
         
         let origin = UI3Position(x: frame.origin.x + (axis == .x ? frame.size.x * sizeFraction * 2 : 0.0),
                                  y: frame.origin.y + (axis == .y ? frame.size.y * sizeFraction * 2 : 0.0),
@@ -82,15 +81,15 @@ public struct Axis: UI3Content {
         object.paddingLength = length
         return object
     }
+    
+    public func color(_ value: UIColor) -> UI3Object {
+        var object = self
+        object.color = value
+        object.rgbColor = false
+        return object
+    }
         
     // MARK: - Content
-    
-    public func color(_ value: UIColor) -> UI3Content {
-        var content = self
-        content.color = value
-        content.rgbColor = false
-        return content
-    }
     
     public func shading(_ value: UI3Shading) -> UI3Content {
         var content = self

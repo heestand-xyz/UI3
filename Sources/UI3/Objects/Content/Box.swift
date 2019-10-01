@@ -16,7 +16,6 @@ public struct Box: UI3Content {
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
-    public var size: UI3Size? { return nil }
     var color: UIColor = .white
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
@@ -66,21 +65,13 @@ public struct Box: UI3Content {
         return object
     }
     
-    // MARK: - Box
-    
-    public func cornerRadius(_ value: CGFloat) -> Box {
-        var box = self
-        box.cornerRadius = value
-        return box
+    public func color(_ value: UIColor) -> UI3Object {
+        var object = self
+        object.color = value
+        return object
     }
     
     // MARK: - Content
-    
-    public func color(_ value: UIColor) -> UI3Content {
-        var content = self
-        content.color = value
-        return content
-    }
     
     public func shading(_ value: UI3Shading) -> UI3Content {
         var content = self
@@ -92,6 +83,14 @@ public struct Box: UI3Content {
         var content = self
         content.isDoubleSided = value
         return content
+    }
+    
+    // MARK: - Box
+    
+    public func cornerRadius(_ value: CGFloat) -> Box {
+        var box = self
+        box.cornerRadius = value
+        return box
     }
     
 }

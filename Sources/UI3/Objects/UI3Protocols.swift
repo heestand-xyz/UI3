@@ -20,6 +20,7 @@ public protocol UI3Object {
     
     func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object
     func padding(edges: UI3Edges, length: CGFloat) -> UI3Object
+    func color(_ value: UIColor) -> UI3Object
 
 }
 
@@ -29,9 +30,12 @@ public protocol UI3Content: UI3Object {
     
 //    var size: UI3Size? { get }
     
-    func color(_ value: UIColor) -> UI3Content
     func shading(_ value: UI3Shading) -> UI3Content
     func isDoubleSided(_ value: Bool) -> UI3Content
+    
+}
+
+public protocol UI3Control: UI3Content {
     
 }
 

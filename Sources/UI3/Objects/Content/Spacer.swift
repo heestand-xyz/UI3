@@ -16,7 +16,6 @@ public struct Spacer: UI3Content {
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
-    public var size: UI3Size? { return nil }
     
     // MARK: - Life Cycle
     
@@ -40,11 +39,11 @@ public struct Spacer: UI3Content {
         return self
     }
     
-    // MARK: - Content
-    
-    public func color(_ value: UIColor) -> UI3Content {
+    public func color(_ value: UIColor) -> UI3Object {
         return self
     }
+    
+    // MARK: - Content
     
     public func shading(_ value: UI3Shading) -> UI3Content {
         return self

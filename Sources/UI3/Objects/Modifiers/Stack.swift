@@ -37,6 +37,11 @@ public struct HStack: UI3ModifierArray {
         object.paddingLength = length
         return object
     }
+    public func color(_ value: UIColor) -> UI3Object {
+        var object = self
+        object.objects = object.objects.map({ $0.color(value) })
+        return object
+    }
 }
 
 public struct VStack: UI3ModifierArray {
@@ -67,6 +72,11 @@ public struct VStack: UI3ModifierArray {
         var object = self
         object.paddingEdges = edges
         object.paddingLength = length
+        return object
+    }
+    public func color(_ value: UIColor) -> UI3Object {
+        var object = self
+        object.objects = object.objects.map({ $0.color(value) })
         return object
     }
 }
@@ -101,6 +111,11 @@ public struct ZStack: UI3ModifierArray {
         object.paddingLength = length
         return object
     }
+    public func color(_ value: UIColor) -> UI3Object {
+        var object = self
+        object.objects = object.objects.map({ $0.color(value) })
+        return object
+    }
 }
 
 public struct WStack: UI3ModifierArray {
@@ -131,6 +146,11 @@ public struct WStack: UI3ModifierArray {
         var object = self
         object.paddingEdges = edges
         object.paddingLength = length
+        return object
+    }
+    public func color(_ value: UIColor) -> UI3Object {
+        var object = self
+        object.objects = object.objects.map({ $0.color(value) })
         return object
     }
 }
@@ -189,11 +209,11 @@ struct Stack: UI3ModifierArray {
                 allObjects.append(object)
             }
         }
-        if let axis = self.axis {
-            if axis == .y {
-                allObjects.reverse()
-            }
-        }
+//        if let axis = self.axis {
+//            if axis == .y {
+//                allObjects.reverse()
+//            }
+//        }
         
         func getSize(on axis: UI3Axis, for object: UI3Object) -> CGFloat? {
             var size: CGFloat?
@@ -260,12 +280,19 @@ struct Stack: UI3ModifierArray {
                 localSize = getSize(on: axis, for: object)
                 let size = localSize ?? lefoverFraction
                 
+                let xSize = getSize(on: .x, for: object)
+                let ySize = getSize(on: .y, for: object)
+                let zSize = getSize(on: .z, for: object)
+                let xSizeScaled = xSize != nil ? (xSize! / frame.size.x) : nil
+                let ySizeScaled = ySize != nil ? (ySize! / frame.size.y) : nil
+                let zSizeScaled = zSize != nil ? (zSize! / frame.size.z) : nil
+                
                 subFrame = UI3Frame(origin: UI3Position(x: axis == .x ? position : 0.0,
                                                         y: axis == .y ? position : 0.0,
                                                         z: axis == .z ? position : 0.0),
-                                    size: UI3Scale(x: axis == .x ? size : 1.0,
-                                                   y: axis == .y ? size : 1.0,
-                                                   z: axis == .z ? size : 1.0))
+                                    size: UI3Scale(x: axis == .x ? size : xSizeScaled ?? 1.0,
+                                                   y: axis == .y ? size : ySizeScaled ?? 1.0,
+                                                   z: axis == .z ? size : zSizeScaled ?? 1.0))
                 position += size
                 
             }
@@ -309,6 +336,12 @@ struct Stack: UI3ModifierArray {
         var object = self
         object.paddingEdges = edges
         object.paddingLength = length
+        return object
+    }
+    
+    public func color(_ value: UIColor) -> UI3Object {
+        var object = self
+        object.objects = object.objects.map({ $0.color(value) })
         return object
     }
     
