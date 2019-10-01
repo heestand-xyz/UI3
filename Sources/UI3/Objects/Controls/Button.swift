@@ -8,7 +8,7 @@
 import SceneKit
 
 public struct Button: UI3Control {
-    
+   
     public let name: String = "Button"
     public var width: CGFloat? { object.width }
     public var height: CGFloat? { object.height }
@@ -80,6 +80,16 @@ public struct Button: UI3Control {
         var content = self
         content.isDoubleSided = value
         return content
+    }
+    
+    // MARK: - Control
+    
+    public func hover(over: Bool) {
+        
+    }
+
+    public func interact(at position: UI3Position) {
+   
     }
     
 }

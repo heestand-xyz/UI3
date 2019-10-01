@@ -37,6 +37,9 @@ public protocol UI3Content: UI3Object {
 
 public protocol UI3Control: UI3Content {
     
+    func hover(over: Bool)
+    func interact(at position: UI3Position)
+    
 }
 
 public protocol UI3Model: UI3Content {
@@ -51,6 +54,8 @@ public protocol UI3Modifier: UI3Object {
     
     var objects: [UI3Object] { get }
     
+    func frames(in frame: UI3Frame) -> [UI3Frame]
+
 }
 
 public protocol UI3ModifierSingle: UI3Modifier {

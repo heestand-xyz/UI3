@@ -21,6 +21,9 @@ public struct HStack: UI3ModifierArray {
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
+    public func frames(in frame: UI3Frame) -> [UI3Frame] {
+        Stack(axis: .x, { objects }).frames(in: frame)
+    }
     public func node(frame: UI3Frame) -> SCNNode {
         Stack(axis: .x, { objects }).node(frame: frame)
     }
@@ -53,6 +56,9 @@ public struct VStack: UI3ModifierArray {
     }
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
+    }
+    public func frames(in frame: UI3Frame) -> [UI3Frame] {
+        Stack(axis: .y, { objects }).frames(in: frame)
     }
     public func node(frame: UI3Frame) -> SCNNode {
         Stack(axis: .y, { objects }).node(frame: frame)
@@ -87,6 +93,9 @@ public struct ZStack: UI3ModifierArray {
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
     }
+    public func frames(in frame: UI3Frame) -> [UI3Frame] {
+        Stack(axis: .z, { objects }).frames(in: frame)
+    }
     public func node(frame: UI3Frame) -> SCNNode {
         Stack(axis: .z, { objects }).node(frame: frame)
     }
@@ -119,6 +128,9 @@ public struct WStack: UI3ModifierArray {
     }
     public init(@UI3Builder _ objects: () -> ([UI3Object])) {
         self.objects = objects()
+    }
+    public func frames(in frame: UI3Frame) -> [UI3Frame] {
+        Stack(axis: nil, { objects }).frames(in: frame)
     }
     public func node(frame: UI3Frame) -> SCNNode {
         Stack(axis: nil, { objects }).node(frame: frame)
@@ -166,22 +178,11 @@ struct Stack: UI3ModifierArray {
         self.objects = objects()
     }
     
-    // MARK: - Node
+    // MARK: - Frames
     
-    func node(frame: UI3Frame) -> SCNNode {
+    func frames(in frame: UI3Frame) -> [UI3Frame] {
         
-        let node = SCNNode()
-        
-        if UI3Defaults.debug {
-            let box = SCNBox(width: frame.size.x, height: frame.size.y, length: frame.size.z, chamferRadius: 0.0)
-            if #available(iOS 11.0, *) {
-                box.firstMaterial!.fillMode = .lines
-            }
-            box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
-            let boxNode = SCNNode(geometry: box)
-            boxNode.position = frame.position.scnVector3
-            node.addChildNode(boxNode)
-        }
+        var frames: [UI3Frame] = []
         
         let allObjects = Stack.getAllObjects(from: objects)
 //        if let axis = self.axis {
@@ -189,10 +190,10 @@ struct Stack: UI3ModifierArray {
 //                allObjects.reverse()
 //            }
 //        }
-        
+
         let segments: [CGFloat?] = self.axis != nil ? Stack.getSegments(for: allObjects, in: frame.size, on: self.axis!) : []
         let totalSegments: CGFloat = segments.compactMap({$0}).reduce(0.0, { $0 + $1 })
-        
+
         let leftoverTotalFraction: CGFloat = max(1.0 - totalSegments, 0.0)
         let leftoverCount: Int = segments.filter({ $0 == nil }).count
         let lefoverFraction: CGFloat = leftoverCount > 0 ? leftoverTotalFraction / CGFloat(leftoverCount) : 0.0
@@ -231,17 +232,47 @@ struct Stack: UI3ModifierArray {
                 finalFrame = finalFrame.innerPadding(edges: object.paddingEdges, length: object.paddingLength)
             }
             
-            let subNode = object.node(frame: finalFrame)
+            frames.append(finalFrame)
+            
+        }
+        
+        return frames
+        
+    }
+    
+    // MARK: - Node
+    
+    func node(frame: UI3Frame) -> SCNNode {
+        
+        let node = SCNNode()
+        
+        if UI3Defaults.debug {
+            let box = SCNBox(width: frame.size.x, height: frame.size.y, length: frame.size.z, chamferRadius: 0.0)
+            if #available(iOS 11.0, *) {
+                box.firstMaterial!.fillMode = .lines
+            }
+            box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
+            let boxNode = SCNNode(geometry: box)
+            boxNode.position = frame.position.scnVector3
+            node.addChildNode(boxNode)
+        }
+        
+        let allObjects = Stack.getAllObjects(from: objects)
+        let allFrames = frames(in: frame)
+        
+        for (i, object) in allObjects.enumerated() {
+        
+            let subNode = object.node(frame: allFrames[i])
             node.addChildNode(subNode)
             
             if UI3Defaults.debug {
-                let box = SCNBox(width: finalFrame.size.x, height: finalFrame.size.y, length: finalFrame.size.z, chamferRadius: 0.0)
+                let box = SCNBox(width: allFrames[i].size.x, height: allFrames[i].size.y, length: allFrames[i].size.z, chamferRadius: 0.0)
                 if #available(iOS 11.0, *) {
                     box.firstMaterial!.fillMode = .lines
                 }
                 box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
                 let boxNode = SCNNode(geometry: box)
-                boxNode.position = finalFrame.position.scnVector3
+                boxNode.position = allFrames[i].position.scnVector3
                 node.addChildNode(boxNode)
             }
             
