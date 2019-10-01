@@ -34,7 +34,7 @@ public class UI3View: UIView {
         view.scene = scene
         view.backgroundColor = .clear
         view.autoenablesDefaultLighting = true
-//        view.allowsCameraControl = true
+        view.allowsCameraControl = true
         addSubview(view)
 
         if UI3Defaults.debug {
