@@ -48,7 +48,7 @@ public struct Sphere: UI3Content {
     
     // MARK: - Object
     
-    public func frame(width: CGFloat? = nil, height: CGFloat? = nil, length: CGFloat? = nil) -> UI3Object {
+    public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
         var object = self
         if width != nil { object.width = width }
         if height != nil { object.height = height }

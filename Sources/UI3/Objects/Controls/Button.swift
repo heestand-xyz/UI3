@@ -51,7 +51,7 @@ public struct Button: UI3Control {
     
     // MARK: - Object
     
-    public func frame(width: CGFloat? = nil, height: CGFloat? = nil, length: CGFloat? = nil) -> UI3Object {
+    public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
         return self
     }
     
