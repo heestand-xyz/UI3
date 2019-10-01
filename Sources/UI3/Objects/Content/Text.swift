@@ -44,9 +44,7 @@ public struct Text: UI3Content {
         text.firstMaterial!.lightingModel = shading.lightingModel
         text.firstMaterial!.diffuse.contents = color
         text.firstMaterial!.isDoubleSided = isDoubleSided || UI3Defaults.wireframe
-        if #available(iOS 11.0, *) {
-            text.firstMaterial!.fillMode = UI3Defaults.wireframe ? .lines : .fill
-        }
+        text.firstMaterial!.fillMode = UI3Defaults.wireframe ? .lines : .fill
         
         let size = UI3Size(x: width!, y: height!, z: length!)
         let offset = UI3Position(x: CGFloat(textNode.boundingBox.min.x) * textScale,

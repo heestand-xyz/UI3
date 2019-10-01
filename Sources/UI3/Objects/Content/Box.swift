@@ -37,9 +37,7 @@ public struct Box: UI3Content {
         box.firstMaterial!.lightingModel = shading.lightingModel
         box.firstMaterial!.diffuse.contents = color
         box.firstMaterial!.isDoubleSided = isDoubleSided || UI3Defaults.wireframe
-        if #available(iOS 11.0, *) {
-            box.firstMaterial!.fillMode = UI3Defaults.wireframe ? .lines : .fill
-        }
+        box.firstMaterial!.fillMode = UI3Defaults.wireframe ? .lines : .fill
         
         let node = SCNNode(geometry: box)
         node.position =  frame.position.scnVector3

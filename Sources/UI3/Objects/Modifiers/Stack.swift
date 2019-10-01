@@ -248,9 +248,7 @@ struct Stack: UI3ModifierArray {
         
         if UI3Defaults.debug {
             let box = SCNBox(width: frame.size.x, height: frame.size.y, length: frame.size.z, chamferRadius: 0.0)
-            if #available(iOS 11.0, *) {
-                box.firstMaterial!.fillMode = .lines
-            }
+            box.firstMaterial!.fillMode = .lines
             box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
             let boxNode = SCNNode(geometry: box)
             boxNode.position = frame.position.scnVector3
@@ -267,9 +265,7 @@ struct Stack: UI3ModifierArray {
             
             if UI3Defaults.debug {
                 let box = SCNBox(width: allFrames[i].size.x, height: allFrames[i].size.y, length: allFrames[i].size.z, chamferRadius: 0.0)
-                if #available(iOS 11.0, *) {
-                    box.firstMaterial!.fillMode = .lines
-                }
+                box.firstMaterial!.fillMode = .lines
                 box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
                 let boxNode = SCNNode(geometry: box)
                 boxNode.position = allFrames[i].position.scnVector3

@@ -56,9 +56,7 @@ public struct Model: UI3Model {
                     if let val = isDoubleSided {
                         material.isDoubleSided = val
                     }
-                    if #available(iOS 11.0, *) {
-                        material.fillMode = UI3Defaults.wireframe ? .lines : .fill
-                    }
+                    material.fillMode = UI3Defaults.wireframe ? .lines : .fill
                 }
             }
             for childNode in node.childNodes {

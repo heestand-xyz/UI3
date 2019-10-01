@@ -6,6 +6,7 @@
 //
 
 import SceneKit
+import SwiftUI
 
 public struct Button: UI3Control {
    
@@ -84,12 +85,8 @@ public struct Button: UI3Control {
     
     // MARK: - Control
     
-    public func hover(over: Bool) {
-        
-    }
-
-    public func interact(at position: UI3Position) {
-   
+    public func interact() {
+        action()
     }
     
 }

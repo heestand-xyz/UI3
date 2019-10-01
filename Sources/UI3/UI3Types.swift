@@ -238,6 +238,12 @@ public struct UI3Frame: Equatable {
                                        z: size.z + (edges.far ? length : 0.0) + (edges.near ? length : 0.0)))
     }
     
+    func contains(_ position: UI3Position) -> Bool {
+        origin.x < position.x && origin.x + size.x > position.x &&
+        origin.y < position.y && origin.y + size.y > position.y &&
+        origin.z < position.z && origin.z + size.z > position.z
+    }
+    
 }
 
 public enum UI3Shading {

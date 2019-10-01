@@ -37,8 +37,7 @@ public protocol UI3Content: UI3Object {
 
 public protocol UI3Control: UI3Content {
     
-    func hover(over: Bool)
-    func interact(at position: UI3Position)
+    func interact()
     
 }
 

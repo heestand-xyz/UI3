@@ -35,9 +35,7 @@ public struct Sphere: UI3Content {
         sphere.firstMaterial!.lightingModel = shading.lightingModel
         sphere.firstMaterial!.diffuse.contents = color
         sphere.firstMaterial!.isDoubleSided = isDoubleSided || UI3Defaults.wireframe
-        if #available(iOS 11.0, *) {
-            sphere.firstMaterial!.fillMode = UI3Defaults.wireframe ? .lines : .fill
-        }
+        sphere.firstMaterial!.fillMode = UI3Defaults.wireframe ? .lines : .fill
         
         let node = SCNNode(geometry: sphere)
         node.position =  frame.position.scnVector3

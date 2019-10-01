@@ -23,11 +23,7 @@ public struct BoundingBox: UI3Content {
     // MARK: - Life Cycle
     
     public init() {
-        if #available(iOS 10.0, *) {
-            color = UIColor(displayP3Red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
-        } else {
-            color = UIColor(red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
-        }
+        color = UIColor(displayP3Red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
     }
     
     // MARK: - Node
