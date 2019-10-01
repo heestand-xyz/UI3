@@ -10,12 +10,14 @@ import SceneKit
 public struct Model: UI3Model {
     
     public let name: String = "Model"
+    
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
     public var aspectWidth: CGFloat { CGFloat(node.boundingBox.max.x - node.boundingBox.min.x) }
     public var aspectHeight: CGFloat { CGFloat(node.boundingBox.max.y - node.boundingBox.min.y) }
     public var aspectLength: CGFloat { CGFloat(node.boundingBox.max.z - node.boundingBox.min.z) }
+    
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     

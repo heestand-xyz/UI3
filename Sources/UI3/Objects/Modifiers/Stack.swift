@@ -210,16 +210,19 @@ struct Stack: UI3ModifierArray {
                 localSize = Stack.getSize(on: axis, for: object, in: frame.size)
                 let size = localSize ?? lefoverFraction
                 
-                let xSize = Stack.getSize(on: .x, for: object, in: frame.size)
-                let ySize = Stack.getSize(on: .y, for: object, in: frame.size)
-                let zSize = Stack.getSize(on: .z, for: object, in: frame.size)
-                let xSizeScaled = xSize != nil ? (xSize! / frame.size.x) : nil
-                let ySizeScaled = ySize != nil ? (ySize! / frame.size.y) : nil
-                let zSizeScaled = zSize != nil ? (zSize! / frame.size.z) : nil
+                let xSize: CGFloat? = Stack.getSize(on: .x, for: object, in: frame.size)
+                let ySize: CGFloat? = Stack.getSize(on: .y, for: object, in: frame.size)
+                let zSize: CGFloat? = Stack.getSize(on: .z, for: object, in: frame.size)
+                let xSizeScaled: CGFloat? = xSize != nil ? (xSize! / frame.size.x) : nil
+                let ySizeScaled: CGFloat? = ySize != nil ? (ySize! / frame.size.y) : nil
+                let zSizeScaled: CGFloat? = zSize != nil ? (zSize! / frame.size.z) : nil
+                let xPositionScaled: CGFloat? = xSizeScaled != nil ? (frame.size.x / frame.size.x / 2 - xSizeScaled! / 2) : nil
+                let yPositionScaled: CGFloat? = ySizeScaled != nil ? (frame.size.y / frame.size.y / 2 - ySizeScaled! / 2) : nil
+                let zPositionScaled: CGFloat? = zSizeScaled != nil ? (frame.size.z / frame.size.z / 2 - zSizeScaled! / 2) : nil
                 
-                subFrame = UI3Frame(origin: UI3Position(x: axis == .x ? position / frame.size.x : 0.0,
-                                                        y: axis == .y ? position / frame.size.y : 0.0,
-                                                        z: axis == .z ? position / frame.size.z : 0.0),
+                subFrame = UI3Frame(origin: UI3Position(x: axis == .x ? position / frame.size.x : xPositionScaled ?? 0.0,
+                                                        y: axis == .y ? position / frame.size.y : yPositionScaled ?? 0.0,
+                                                        z: axis == .z ? position / frame.size.z : zPositionScaled ?? 0.0),
                                     size: UI3Scale(x: axis == .x ? size / frame.size.x : xSizeScaled ?? 1.0,
                                                    y: axis == .y ? size / frame.size.y : ySizeScaled ?? 1.0,
                                                    z: axis == .z ? size / frame.size.z : zSizeScaled ?? 1.0))
@@ -249,7 +252,7 @@ struct Stack: UI3ModifierArray {
         if UI3Defaults.debug {
             let box = SCNBox(width: frame.size.x, height: frame.size.y, length: frame.size.z, chamferRadius: 0.0)
             box.firstMaterial!.fillMode = .lines
-            box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
+//            box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
             let boxNode = SCNNode(geometry: box)
             boxNode.position = frame.position.scnVector3
             node.addChildNode(boxNode)
@@ -266,7 +269,7 @@ struct Stack: UI3ModifierArray {
             if UI3Defaults.debug {
                 let box = SCNBox(width: allFrames[i].size.x, height: allFrames[i].size.y, length: allFrames[i].size.z, chamferRadius: 0.0)
                 box.firstMaterial!.fillMode = .lines
-                box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
+//                box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
                 let boxNode = SCNNode(geometry: box)
                 boxNode.position = allFrames[i].position.scnVector3
                 node.addChildNode(boxNode)

@@ -10,9 +10,11 @@ import SceneKit
 public struct Sphere: UI3Content {
     
     public let name: String = "Sphere"
+    
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
+    
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
@@ -38,7 +40,7 @@ public struct Sphere: UI3Content {
         sphere.firstMaterial!.fillMode = UI3Defaults.wireframe ? .lines : .fill
         
         let node = SCNNode(geometry: sphere)
-        node.position =  frame.position.scnVector3
+        node.position = frame.position.scnVector3
         
         return node
         

@@ -10,9 +10,11 @@ import SceneKit
 public struct Box: UI3Content {
     
     public let name: String = "Box"
+    
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
+    
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
@@ -40,7 +42,7 @@ public struct Box: UI3Content {
         box.firstMaterial!.fillMode = UI3Defaults.wireframe ? .lines : .fill
         
         let node = SCNNode(geometry: box)
-        node.position =  frame.position.scnVector3
+        node.position = frame.position.scnVector3
         
         return node
         

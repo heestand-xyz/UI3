@@ -15,6 +15,19 @@ public enum UI3Axis {
     case z
 }
 
+public enum UI3Plane {
+    case xy
+    case yz
+    case xz
+    var axes: (UI3Axis, UI3Axis) {
+        switch self {
+        case .xy: return (.x, .y)
+        case .yz: return (.y, .z)
+        case .xz: return (.x, .z)
+        }
+    }
+}
+
 public enum UI3Edges {
     
     case none
@@ -93,6 +106,14 @@ public struct UI3Vector: Equatable {
         self.x = x
         self.y = y
         self.z = z
+    }
+    
+    func value(on axis: UI3Axis) -> CGFloat {
+        switch axis {
+        case .x: return x
+        case .y: return y
+        case .z: return z
+        }
     }
     
     public static func + (lhs: UI3Vector, rhs: UI3Vector) -> UI3Vector {

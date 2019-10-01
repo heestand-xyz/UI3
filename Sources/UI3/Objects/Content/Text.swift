@@ -10,9 +10,11 @@ import SceneKit
 public struct Text: UI3Content {
     
     public let name: String = "Text"
+    
     public var width: CGFloat? { CGFloat(textNode.boundingBox.max.x - textNode.boundingBox.min.x) * textScale }
     public var height: CGFloat? { CGFloat(textNode.boundingBox.max.y - textNode.boundingBox.min.y) * textScale }
     public var length: CGFloat? { CGFloat(textNode.boundingBox.max.z - textNode.boundingBox.min.z) }
+    
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
@@ -26,11 +28,6 @@ public struct Text: UI3Content {
 
     // MARK: - Life Cycle
     
-    public init() {
-        text = SCNText()
-        textNode = SCNNode()
-    }
-      
     public init(_ text: String, extrusionDepth: CGFloat = 0.01) {
         self.text = SCNText(string: text, extrusionDepth: extrusionDepth)
         self.textNode = SCNNode(geometry: self.text)

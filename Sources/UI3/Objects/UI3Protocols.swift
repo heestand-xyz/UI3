@@ -25,11 +25,7 @@ public protocol UI3Object {
 }
 
 public protocol UI3Content: UI3Object {
-    
-    init()
-    
-//    var size: UI3Size? { get }
-    
+            
     func shading(_ value: UI3Shading) -> UI3Content
     func isDoubleSided(_ value: Bool) -> UI3Content
     

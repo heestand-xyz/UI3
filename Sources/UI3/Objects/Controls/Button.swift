@@ -10,9 +10,11 @@ import SceneKit
 public struct Button: UI3Control {
    
     public let name: String = "Button"
+    
     public var width: CGFloat? { object.width }
     public var height: CGFloat? { object.height }
     public var length: CGFloat? { object.length }
+    
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
@@ -26,11 +28,6 @@ public struct Button: UI3Control {
 
     // MARK: - Life Cycle
     
-    public init() {
-        action = {}
-        object = Text("Button")
-    }
-      
     public init(action: @escaping () -> (), _ object: () -> (UI3Object)) {
         self.action = action
         self.object = object()

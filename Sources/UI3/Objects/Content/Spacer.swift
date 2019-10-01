@@ -10,9 +10,11 @@ import SceneKit
 public struct Spacer: UI3Content {
     
     public let name: String = "Spacer"
+    
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
     public var length: CGFloat? = nil
+    
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
