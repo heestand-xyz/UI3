@@ -133,47 +133,18 @@ public class UI3View: UIView {
     
     // MARK: - Touch
     
-    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let location = touches.first!.location(in: self)
-        let uv = CGPoint(x: location.x / bounds.width, y: (location.y - (bounds.height - bounds.width) / 2) / bounds.width)
-        let position = UI3Position(x: uv.x, y: uv.y, z: 0.5)
-        let frames = allFrames()
-        for (i, object) in allObjects().enumerated() {
-            if let control = object as? UI3Control {
-                if frames[i].contains(position) {
-                    control.interact()
-                }
-            }
-        }
-    }
-    
-//    func touchesBegan() {
-//
-//    }
-//
-//    func touchesMoved(to location: CGPoint) {
-//
-//    }
-//
-//    func touchesEnded() {
-//
-//    }
-//
-//    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        touchesBegan()
-//        touchesMoved(to: touches.first!.location(in: self))
-//    }
-//
-//    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        touchesMoved(to: touches.first!.location(in: self))
-//    }
-//
 //    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        touchesEnded()
-//    }
-//
-//    public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        touchesEnded()
+//        let location = touches.first!.location(in: self)
+//        let uv = CGPoint(x: location.x / bounds.width, y: (location.y - (bounds.height - bounds.width) / 2) / bounds.width)
+//        let position = UI3Position(x: uv.x, y: uv.y, z: 0.5)
+//        let frames = allFrames()
+//        for (i, object) in allObjects().enumerated() {
+//            if let control = object as? UI3Control {
+//                if frames[i].contains(position) {
+//                    control.interact()
+//                }
+//            }
+//        }
 //    }
     
     required init?(coder: NSCoder) {

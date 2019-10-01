@@ -6,7 +6,6 @@
 //
 
 import SceneKit
-import SwiftUI
 
 public struct Button: UI3Control {
    
