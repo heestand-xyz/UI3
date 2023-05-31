@@ -13,17 +13,24 @@ struct ContentView: View {
         UI3.Scene {
             UI3.HStack {
                 UI3.Box()
+                    .cornerRadius(0.1)
                 UI3.Box()
+                    .cornerRadius(0.1)
                     .frame(width: 0.25)
                 UI3.VStack {
                     UI3.Box()
+                        .cornerRadius(0.1)
                     UI3.Box()
+                        .cornerRadius(0.1)
                         .frame(height: 0.25)
                     UI3.ZStack {
                         UI3.Box()
+                            .cornerRadius(0.1)
                         UI3.Box()
+                            .cornerRadius(0.1)
                             .frame(length: 0.25)
                         UI3.Box()
+                            .cornerRadius(0.1)
                     }
                 }
             }
