@@ -10,17 +10,20 @@ import UI3
 
 struct ContentView: View {
     var body: some View {
-        UI3 {
-            HStack {
-                Box()
-                Box().frame(width: 0.25)
-                VStack {
-                    Box()
-                    Box().frame(height: 0.25)
-                    ZStack {
-                        Box()
-                        Box().frame(length: 0.25)
-                        Box()
+        UI3.Scene {
+            UI3.HStack {
+                UI3.Box()
+                UI3.Box()
+                    .frame(width: 0.25)
+                UI3.VStack {
+                    UI3.Box()
+                    UI3.Box()
+                        .frame(height: 0.25)
+                    UI3.ZStack {
+                        UI3.Box()
+                        UI3.Box()
+                            .frame(length: 0.25)
+                        UI3.Box()
                     }
                 }
             }
@@ -39,12 +42,12 @@ import UI3
 
 struct ContentView: View {
     var body: some View {
-        UI3 {
-            WStack {
-                Sphere()
+        UI3.Scene {
+            UI3.WStack {
+                UI3.Sphere()
                     .padding(edges: .all, length: 0.15)
-                Grid(x: 0..<3, y: 0..<3, z: 0..<3) {
-                    Box()
+                UI3.Grid(x: 0..<3, y: 0..<3, z: 0..<3) {
+                    UI3.Box()
                         .cornerRadius(0.025)
                         .padding(edges: .all, length: 0.1)
                 }
@@ -64,15 +67,15 @@ import UI3
 
 struct ContentView: View {
     var body: some View {
-        UI3 {
-            HStack {
-                Box().cornerRadius(0.1)
-                VStack {
-                    ZStack {
-                        Box().cornerRadius(0.1)
-                        Model("suzanne.obj")
+        UI3.Scene {
+            UI3.HStack {
+                UI3.Box().cornerRadius(0.1)
+                UI3.VStack {
+                    UI3.ZStack {
+                        UI3.Box().cornerRadius(0.1)
+                        UI3.Model("suzanne.obj")
                     }
-                    Box().cornerRadius(0.1)
+                    UI3.Box().cornerRadius(0.1)
                 }
             }
         }
