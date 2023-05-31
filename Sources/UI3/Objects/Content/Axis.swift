@@ -18,7 +18,7 @@ public struct Axis: UI3Content {
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
-    var color: UIColor = .white
+    var color: _Color = .white
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
     
@@ -30,7 +30,7 @@ public struct Axis: UI3Content {
     
     // MARK: - Axie
     
-    func axie(frame: UI3Frame, axis: UI3Axis, color: UIColor) -> SCNNode {
+    func axie(frame: UI3Frame, axis: UI3Axis, color: _Color) -> SCNNode {
         
         let sizeFraction: CGFloat = 0.1
         let cornerRadius: CGFloat = 0.0025
@@ -84,7 +84,7 @@ public struct Axis: UI3Content {
         return object
     }
     
-    public func color(_ value: UIColor) -> UI3Object {
+    public func color(_ value: _Color) -> UI3Object {
         var object = self
         object.color = value
         object.rgbColor = false

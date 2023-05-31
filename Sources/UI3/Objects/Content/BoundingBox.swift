@@ -18,14 +18,14 @@ public struct BoundingBox: UI3Content {
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
-    var color: UIColor = .white
+    var color: _Color = .white
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
     
     // MARK: - Life Cycle
     
     public init() {
-        color = UIColor(displayP3Red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
+        color = _Color(displayP3Red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
     }
     
     // MARK: - Node
@@ -95,7 +95,7 @@ public struct BoundingBox: UI3Content {
         return object
     }
     
-    public func color(_ value: UIColor) -> UI3Object {
+    public func color(_ value: _Color) -> UI3Object {
         var object = self
         object.color = value
         return object

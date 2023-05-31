@@ -7,154 +7,10 @@
 
 import SceneKit
 
-public struct HStack: UI3ModifierArray {
-    public let name: String = "HStack"
-    public var objects: [UI3Object]
-    public var width: CGFloat? { relWidth(height: height, length: length) }
-    public var height: CGFloat? { height(for: objects) }
-    public var length: CGFloat? { length(for: objects) }
-    public var paddingEdges: UI3Edges = .none
-    public var paddingLength: CGFloat = 0.0
-    public init(@UI3Builder _ object: () -> (UI3Object)) {
-        self.objects = [object()]
-    }
-    public init(@UI3Builder _ objects: () -> ([UI3Object])) {
-        self.objects = objects()
-    }
-    public func frames(in frame: UI3Frame) -> [UI3Frame] {
-        Stack(axis: .x, { objects }).frames(in: frame)
-    }
-    public func node(frame: UI3Frame) -> SCNNode {
-        Stack(axis: .x, { objects }).node(frame: frame)
-    }
-    public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
-        return self
-    }
-    public func padding(edges: UI3Edges, length: CGFloat) -> UI3Object {
-        var object = self
-        object.paddingEdges = edges
-        object.paddingLength = length
-        return object
-    }
-    public func color(_ value: UIColor) -> UI3Object {
-        var object = self
-        object.objects = object.objects.map({ $0.color(value) })
-        return object
-    }
-}
-
-public struct VStack: UI3ModifierArray {
-    public let name: String = "VStack"
-    public var objects: [UI3Object]
-    public var width: CGFloat? { width(for: objects) }
-    public var height: CGFloat? { relHeight(width: width, length: length) }
-    public var length: CGFloat? { length(for: objects) }
-    public var paddingEdges: UI3Edges = .none
-    public var paddingLength: CGFloat = 0.0
-    public init(@UI3Builder _ object: () -> (UI3Object)) {
-        self.objects = [object()]
-    }
-    public init(@UI3Builder _ objects: () -> ([UI3Object])) {
-        self.objects = objects()
-    }
-    public func frames(in frame: UI3Frame) -> [UI3Frame] {
-        Stack(axis: .y, { objects }).frames(in: frame)
-    }
-    public func node(frame: UI3Frame) -> SCNNode {
-        Stack(axis: .y, { objects }).node(frame: frame)
-    }
-    public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
-        return self
-    }
-    public func padding(edges: UI3Edges, length: CGFloat) -> UI3Object {
-        var object = self
-        object.paddingEdges = edges
-        object.paddingLength = length
-        return object
-    }
-    public func color(_ value: UIColor) -> UI3Object {
-        var object = self
-        object.objects = object.objects.map({ $0.color(value) })
-        return object
-    }
-}
-
-public struct ZStack: UI3ModifierArray {
-    public let name: String = "ZStack"
-    public var objects: [UI3Object]
-    public var width: CGFloat? { width(for: objects) }
-    public var height: CGFloat? { height(for: objects) }
-    public var length: CGFloat? { relLength(width: width, height: height) }
-    public var paddingEdges: UI3Edges = .none
-    public var paddingLength: CGFloat = 0.0
-    public init(@UI3Builder _ object: () -> (UI3Object)) {
-        self.objects = [object()]
-    }
-    public init(@UI3Builder _ objects: () -> ([UI3Object])) {
-        self.objects = objects()
-    }
-    public func frames(in frame: UI3Frame) -> [UI3Frame] {
-        Stack(axis: .z, { objects }).frames(in: frame)
-    }
-    public func node(frame: UI3Frame) -> SCNNode {
-        Stack(axis: .z, { objects }).node(frame: frame)
-    }
-    public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
-        return self
-    }
-    public func padding(edges: UI3Edges, length: CGFloat) -> UI3Object {
-        var object = self
-        object.paddingEdges = edges
-        object.paddingLength = length
-        return object
-    }
-    public func color(_ value: UIColor) -> UI3Object {
-        var object = self
-        object.objects = object.objects.map({ $0.color(value) })
-        return object
-    }
-}
-
-public struct WStack: UI3ModifierArray {
-    public let name: String = "WStack"
-    public var objects: [UI3Object]
-    public var width: CGFloat? { width(for: objects) }
-    public var height: CGFloat? { height(for: objects) }
-    public var length: CGFloat? { length(for: objects) }
-    public var paddingEdges: UI3Edges = .none
-    public var paddingLength: CGFloat = 0.0
-    public init(@UI3Builder _ object: () -> (UI3Object)) {
-        self.objects = [object()]
-    }
-    public init(@UI3Builder _ objects: () -> ([UI3Object])) {
-        self.objects = objects()
-    }
-    public func frames(in frame: UI3Frame) -> [UI3Frame] {
-        Stack(axis: nil, { objects }).frames(in: frame)
-    }
-    public func node(frame: UI3Frame) -> SCNNode {
-        Stack(axis: nil, { objects }).node(frame: frame)
-    }
-    public func frame(width: CGFloat?, height: CGFloat?, length: CGFloat?) -> UI3Object {
-        return self
-    }
-    public func padding(edges: UI3Edges, length: CGFloat) -> UI3Object {
-        var object = self
-        object.paddingEdges = edges
-        object.paddingLength = length
-        return object
-    }
-    public func color(_ value: UIColor) -> UI3Object {
-        var object = self
-        object.objects = object.objects.map({ $0.color(value) })
-        return object
-    }
-}
-
 struct Stack: UI3ModifierArray {
     
-    var axis: UI3Axis? = nil
-    var objects: [UI3Object]
+    let axis: UI3Axis?
+    var objects: [any UI3Object]
     
     public let name: String = "Stack"
     public var width: CGFloat? = nil
@@ -165,15 +21,16 @@ struct Stack: UI3ModifierArray {
     
     // MARK: - Life Cycle
     
-    public init(@UI3Builder _ object: () -> (UI3Object)) {
-        self.objects = [object()]
+    init(axis: UI3Axis?, _ objects: [any UI3Object]) {
+        self.axis = axis
+        self.objects = objects
     }
     
-    init(@UI3Builder _ objects: () -> ([UI3Object])) {
-        self.objects = objects()
+    init(_ objects: () -> ([UI3Object])) {
+        fatalError("please use init(axis:_:)")
     }
     
-    init(axis: UI3Axis?, @UI3Builder _ objects: () -> ([UI3Object])) {
+    init(axis: UI3Axis?, @UI3Builder _ objects: () -> ([any UI3Object])) {
         self.axis = axis
         self.objects = objects()
     }
@@ -252,7 +109,7 @@ struct Stack: UI3ModifierArray {
         if UI3Defaults.debug {
             let box = SCNBox(width: frame.size.x, height: frame.size.y, length: frame.size.z, chamferRadius: 0.0)
             box.firstMaterial!.fillMode = .lines
-//            box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
+//            box.firstMaterial!.diffuse.contents = _Color(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
             let boxNode = SCNNode(geometry: box)
             boxNode.position = frame.position.scnVector3
             node.addChildNode(boxNode)
@@ -269,7 +126,7 @@ struct Stack: UI3ModifierArray {
             if UI3Defaults.debug {
                 let box = SCNBox(width: allFrames[i].size.x, height: allFrames[i].size.y, length: allFrames[i].size.z, chamferRadius: 0.0)
                 box.firstMaterial!.fillMode = .lines
-//                box.firstMaterial!.diffuse.contents = UIColor(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
+//                box.firstMaterial!.diffuse.contents = _Color(hue: .random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
                 let boxNode = SCNNode(geometry: box)
                 boxNode.position = allFrames[i].position.scnVector3
                 node.addChildNode(boxNode)
@@ -298,7 +155,7 @@ struct Stack: UI3ModifierArray {
         return object
     }
     
-    public func color(_ value: UIColor) -> UI3Object {
+    public func color(_ value: _Color) -> UI3Object {
         var object = self
         object.objects = object.objects.map({ $0.color(value) })
         return object
@@ -306,7 +163,7 @@ struct Stack: UI3ModifierArray {
     
     // MARK: - Segments
     
-    static func getSegments(for objects: [UI3Object], in size: UI3Size, on axis: UI3Axis) -> [CGFloat?] {
+    static func getSegments(for objects: [any UI3Object], in size: UI3Size, on axis: UI3Axis) -> [CGFloat?] {
         var segments: [CGFloat?] = []
         for object in objects {
             segments.append(getSize(on: axis, for: object, in: size))
@@ -316,8 +173,8 @@ struct Stack: UI3ModifierArray {
     
     // MARK: - Objects
     
-    static func getAllObjects(from objects: [UI3Object]) -> [UI3Object] {
-        var allObjects: [UI3Object] = []
+    static func getAllObjects(from objects: [any UI3Object]) -> [any UI3Object] {
+        var allObjects: [any UI3Object] = []
         for object in objects {
             if let forEach = object as? ForEach {
                 for object in forEach.objects {

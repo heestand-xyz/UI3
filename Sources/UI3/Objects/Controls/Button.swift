@@ -18,7 +18,7 @@ public struct Button: UI3Control {
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
-    var color: UIColor = UIColor(red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
+    var color: _Color = _Color(red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
     
@@ -59,7 +59,7 @@ public struct Button: UI3Control {
         return object
     }
     
-    public func color(_ value: UIColor) -> UI3Object {
+    public func color(_ value: _Color) -> UI3Object {
         var object = self
         object.object = object.object.color(value)
         return object

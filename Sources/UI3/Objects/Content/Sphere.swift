@@ -18,7 +18,7 @@ public struct Sphere: UI3Content {
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
-    var color: UIColor = .white
+    var color: _Color = .white
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
     
@@ -63,7 +63,7 @@ public struct Sphere: UI3Content {
         return object
     }
     
-    public func color(_ value: UIColor) -> UI3Object {
+    public func color(_ value: _Color) -> UI3Object {
         var object = self
         object.color = value
         return object

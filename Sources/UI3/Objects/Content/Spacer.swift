@@ -41,7 +41,7 @@ public struct Spacer: UI3Content {
         return self
     }
     
-    public func color(_ value: UIColor) -> UI3Object {
+    public func color(_ value: _Color) -> UI3Object {
         return self
     }
     

@@ -8,7 +8,7 @@
 import SceneKit
 
 @available(iOS 9.0, *)
-public class UI3View: UIView {
+public class UI3View: _View {
     
     let view: SCNView
     let scene: SCNScene
@@ -89,13 +89,13 @@ public class UI3View: UIView {
         cameraNode.position = SCNVector3(globalFrame.position.x, globalFrame.position.y, 3.0)
         scene.rootNode.addChildNode(cameraNode)
         
-        layout()
+        setupLayout()
         
     }
     
     // MARK - Layout
     
-    func layout() {
+    func setupLayout() {
         
         view.translatesAutoresizingMaskIntoConstraints = false
         view.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -107,8 +107,8 @@ public class UI3View: UIView {
     
     // MARK: - Objects
     
-    func allObjects() -> [UI3Object] {
-        var objects: [UI3Object] = []
+    func allObjects() -> [any UI3Object] {
+        var objects: [any UI3Object] = []
         func traverse(_ object: UI3Object) {
             objects.append(object)
             if let modifier = object as? UI3Modifier {

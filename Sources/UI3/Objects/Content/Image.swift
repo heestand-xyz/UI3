@@ -21,17 +21,17 @@ public struct Image: UI3Model {
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
-    var color: UIColor = .white
+    var color: _Color = .white
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
     
-    let image: UIImage?
+    let image: _Image?
     let plane: UI3Plane
     
     // MARK: - Life Cycle
     
     public init(_ name: String, plane: UI3Plane = .xy) {
-        image = UIImage(named: name)
+        image = _Image(named: name)
         self.plane = plane
     }
     
@@ -66,7 +66,7 @@ public struct Image: UI3Model {
         return object
     }
     
-    public func color(_ value: UIColor) -> UI3Object {
+    public func color(_ value: _Color) -> UI3Object {
         var object = self
         object.color = value
         return object

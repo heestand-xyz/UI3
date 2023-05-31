@@ -11,7 +11,7 @@ public struct Grid: UI3ModifierSingle {
     
     public let name: String = "Grid"
     
-    public var objects: [UI3Object]
+    public var objects: [any UI3Object]
     
     public var width: CGFloat? = nil
     public var height: CGFloat? = nil
@@ -68,7 +68,7 @@ public struct Grid: UI3ModifierSingle {
         return self
     }
     
-    public func color(_ value: UIColor) -> UI3Object {
+    public func color(_ value: _Color) -> UI3Object {
         var object = self
         object.objects = object.objects.map({ $0.color(value) })
         return object

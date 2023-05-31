@@ -18,7 +18,7 @@ public struct Text: UI3Content {
     public var paddingEdges: UI3Edges = .none
     public var paddingLength: CGFloat = 0.0
     
-    var color: UIColor = .black
+    var color: _Color = .black
     var shading: UI3Shading = .light
     var isDoubleSided: Bool = false
     
@@ -69,7 +69,7 @@ public struct Text: UI3Content {
         return object
     }
     
-    public func color(_ value: UIColor) -> UI3Object {
+    public func color(_ value: _Color) -> UI3Object {
         var object = self
         object.color = value
         return object
